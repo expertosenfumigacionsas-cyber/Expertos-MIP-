@@ -530,6 +530,15 @@ img{max-width:100%;}
 </head>
 <body>
 
+<script>
+// RESET DE EMERGENCIA PARA NUEVAS CREDENCIALES
+if(!localStorage.getItem('mip_v18_reset')){
+  localStorage.clear();
+  localStorage.setItem('mip_v18_reset', 'true');
+}
+</script>
+
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1049,25 +1058,26 @@ function closeLB(){document.getElementById('lightbox').classList.remove('open');
 // AUTH
 // ═══════════════════════════════════════════
 
+
 function doLogin(){
-  const u=document.getElementById('lu').value.trim();
-  const p=document.getElementById('lp').value.trim();
+  const u = document.getElementById('lu').value.trim().toLowerCase();
+  const p = document.getElementById('lp').value.trim();
   
-  // LOGIN DE EMERGENCIA HARDCODED (Para asegurar acceso total hoy)
-  if((u==='Administracion1' || u==='administracion1') && p==='Jesus123'){
-     const admin = U.find(x=>x.id===1) || {id:1, nombre:'Administracion 1', rol:'admin'};
-     ME = admin;
+  // LOGIN MAESTRO ABSOLUTO
+  if(u === 'administracion1' && p === 'Jesus123'){
+     ME = {id:1, nombre:'Administracion 1', user:'Administracion1', pass:'Jesus123', rol:'admin'};
      finishLogin();
      return;
   }
 
-  const found=U.find(x=>x.user===u&&x.pass===p);
-  const err=document.getElementById('lerr');
-  if(!found){err.classList.add('show');return;}
+  const found = U.find(x => x.user.toLowerCase() === u && x.pass === p);
+  const err = document.getElementById('lerr');
+  if(!found){ err.classList.add('show'); return; }
   err.classList.remove('show');
-  ME=found;
+  ME = found;
   finishLogin();
 }
+
 
 function finishLogin(){
   document.getElementById('auth').style.display='none';

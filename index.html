@@ -1,142 +1,106 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Expertos MIP Pro</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><style>
-:root{--p:#2ecc71;--d:#0d0e2b;--s:#1a1b3a;--c:#1abc9c;--bg:#0d0e2b;--txt:#ffffff;--card:#161738;--accent:#5c6bc0}
+:root{--p:#2ecc71;--d:#0d0e2b;--s:#1a1b3a;--c:#1abc9c;--bg:#0d0e2b;--txt:#ffffff;--card:#161738;--accent:#5c6bc0;--sub-bg:#1c1d45}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter','Segoe UI',sans-serif}
 body{background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
 
-/* LOGIN */
 #ls{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg, #1b5e20 0%, #0d1124 100%);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px}
 .card-login{background:rgba(255,255,255,0.98);padding:40px 30px;border-radius:32px;width:100%;max-width:400px;text-align:center;color:#333}
 
-/* APP LAYOUT */
 #app{display:none}
 header{background:var(--d);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.05)}
 .header-icons{display:flex;gap:18px;align-items:center;font-size:1.2rem;color:rgba(255,255,255,0.7)}
 
-/* SIDE MENU (Basado en la imagen) */
-#menu-overlay{position:fixed;top:0;left:-100%;width:100%;height:100%;background:var(--d);z-index:2000;transition:0.4s cubic-bezier(0.4, 0, 0.2, 1);padding:20px}
+/* SIDE MENU EVOLUCIONADO */
+#menu-overlay{position:fixed;top:0;left:-100%;width:100%;height:100%;background:var(--d);z-index:2000;transition:0.4s cubic-bezier(0.4, 0, 0.2, 1);padding:20px;overflow-y:auto}
 #menu-overlay.open{left:0}
 .close-btn{width:45px;height:45px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:30px;cursor:pointer}
-.menu-list{list-style:none}
-.menu-item-row{display:flex;align-items:center;padding:15px 0;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;transition:0.2s}
+
+.menu-item-row{display:flex;align-items:center;padding:15px 12px;border-bottom:1px solid rgba(255,255,255,0.03);cursor:pointer;border-radius:12px;margin-bottom:2px}
 .menu-item-row:active{background:rgba(255,255,255,0.05)}
-.menu-item-row i:first-child{width:35px;font-size:1.1rem;color:rgba(255,255,255,0.9)}
-.menu-item-row span{flex:1;font-size:1rem;font-weight:400;color:rgba(255,255,255,0.9)}
-.menu-item-row i:last-child{font-size:0.7rem;color:rgba(255,255,255,0.4)}
+.menu-item-row.active-sub{background:rgba(92, 107, 192, 0.2);border-left:4px solid var(--accent)}
+.menu-item-row i:first-child{width:30px;font-size:1rem;color:rgba(255,255,255,0.9)}
+.menu-item-row span{flex:1;font-size:0.95rem;color:rgba(255,255,255,0.9)}
+.menu-item-row .chevron{font-size:0.7rem;color:rgba(255,255,255,0.4);transition:0.3s}
+.chevron.down{transform:rotate(180deg)}
+
+/* SUBMENÚ */
+.submenu{max-height:0;overflow:hidden;transition:0.3s ease-out;padding-left:15px}
+.submenu.open{max-height:500px;margin-bottom:10px}
+.sub-item{display:flex;align-items:center;padding:12px 10px;color:rgba(255,255,255,0.7);font-size:0.9rem;cursor:pointer}
+.sub-item i{width:25px;font-size:0.85rem}
 
 /* VIEWS */
-.view{display:none;padding:20px;max-width:800px;margin:0 auto;animation:fadeIn 0.3s}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.view{display:none;padding:20px;max-width:800px;margin:0 auto}
 .active{display:block}
 .form-sector{background:var(--card);padding:20px;border-radius:24px;margin-bottom:15px;border-left:5px solid var(--c)}
-.form-sector-title{font-size:0.95rem;font-weight:700;color:var(--c);margin-bottom:15px;display:flex;align-items:center;gap:10px}
-input,select,textarea{width:100%;padding:14px;margin:10px 0;border:1px solid rgba(255,255,255,0.1);border-radius:12px;background:#1e2548;color:white}
 .btn-primary{width:100%;padding:18px;background:var(--p);color:white;border:none;border-radius:18px;font-weight:700;margin-top:20px;cursor:pointer}
 
-/* FIRMA */
-.signature-box{background:#fff;border-radius:15px;padding:10px;margin-top:10px}
-#canvas{background:#fdfdfd;border-radius:10px;width:100%;touch-action:none;border:1px dashed #ccc}
-
-/* NAV FOOTER */
 nav{position:fixed;bottom:20px;left:20px;right:20px;background:rgba(22,23,56,0.95);backdrop-filter:blur(10px);display:flex;justify-content:space-around;padding:15px;border-radius:24px;z-index:1500;border:1px solid rgba(255,255,255,0.1)}
-nav button{background:none;border:none;color:white;font-size:1.4rem;opacity:0.4;cursor:pointer}
+nav button{background:none;border:none;color:white;font-size:1.4rem;opacity:0.4}
 nav button.active-nav{opacity:1;color:var(--c)}
 </style></head><body>
 
-<div id="ls"><div class="card-login"><h2>Expertos MIP</h2><p>Inicie sesión</p><input type="text" id="un" placeholder="Usuario"><input type="password" placeholder="Contraseña"><button class="btn-primary" onclick="login()">Ingresar</button></div></div>
+<div id="ls"><div class="card-login"><h2>Expertos MIP</h2><input type="text" id="un" placeholder="Usuario"><input type="password" placeholder="Contraseña"><button class="btn-primary" onclick="login()">Ingresar</button></div></div>
 
 <div id="app">
     <header>
         <div onclick="toggleMenu()" style="cursor:pointer;font-size:1.3rem"><i class="fas fa-bars"></i></div>
-        <div class="header-icons">
-            <i class="fas fa-search"></i>
-            <i class="fas fa-paint-roller"></i>
-            <i class="fas fa-bell"></i>
-            <i class="fas fa-user-circle" style="font-size:1.8rem"></i>
-        </div>
+        <div class="header-icons"><i class="fas fa-search"></i><i class="fas fa-paint-roller"></i><i class="fas fa-bell"></i><i class="fas fa-user-circle" style="font-size:1.8rem"></i></div>
     </header>
 
     <div id="menu-overlay">
         <div class="close-btn" onclick="toggleMenu()"><i class="fas fa-times"></i></div>
-        <div class="menu-list">
-            <div class="menu-item-row" onclick="go('v-clientes')"><i class="fas fa-search"></i><span>Portal Clientes</span></div>
-            <div class="menu-item-row" onclick="go('v-notif')"><i class="fas fa-bell"></i><span>Notificaciones</span><i class="fas fa-chevron-right"></i></div>
-            <div class="menu-item-row" onclick="go('v-tech')"><i class="fas fa-id-card"></i><span>Técnicos</span><i class="fas fa-chevron-right"></i></div>
-            <div class="menu-item-row" onclick="go('v-fichas')"><i class="fas fa-file-medical"></i><span>Gestor de Archivos</span></div>
-            <div class="menu-item-row" onclick="go('v-comercial')"><i class="fas fa-briefcase"></i><span>Gestión Comercial</span><i class="fas fa-chevron-right"></i></div>
-            <div class="menu-item-row" onclick="go('v-serv')"><i class="fas fa-hammer"></i><span>Gestión Operativa</span><i class="fas fa-chevron-right"></i></div>
-            <div class="menu-item-row" onclick="go('v-admin')"><i class="fas fa-cog"></i><span>Gestión Administrativa</span><i class="fas fa-chevron-right"></i></div>
-            <div class="menu-item-row" onclick="go('v-gerencial')"><i class="fas fa-chart-line"></i><span>Gerencial empresarial</span><i class="fas fa-chevron-right"></i></div>
-            <div class="menu-item-row" onclick="logout()"><i class="fas fa-code"></i><span>Mantenimientos del Sistema</span><i class="fas fa-chevron-right"></i></div>
+        
+        <!-- Portal Clientes -->
+        <div class="menu-item-row" onclick="go('v-clientes')"><i class="fas fa-search"></i><span>Portal Clientes</span></div>
+
+        <!-- Notificaciones con Submenú (Según la imagen) -->
+        <div class="menu-item-row active-sub" onclick="toggleSub('sub-notif', this)">
+            <i class="fas fa-bell"></i><span>Notificaciones</span><i class="fas fa-chevron-down chevron"></i>
         </div>
+        <div id="sub-notif" class="submenu">
+            <div class="sub-item" onclick="go('v-send-notif')"><i class="fas fa-paper-plane"></i> Enviar notificación</div>
+            <div class="sub-item" onclick="go('v-list-notif')"><i class="fas fa-list"></i> Lista de notificaciones</div>
+            <div class="sub-item" onclick="go('v-outbox')"><i class="fas fa-reply"></i> Bandeja de salida</div>
+            <div class="sub-item" onclick="go('v-pref')"><i class="fas fa-cogs"></i> Preferencias</div>
+            <div class="sub-item" onclick="go('v-user-labels')"><i class="fas fa-users-cog"></i> Etiquetas definidas por usuario</div>
+            <div class="sub-item" onclick="go('v-labels')"><i class="fas fa-tag"></i> Etiquetas</div>
+        </div>
+
+        <!-- Otros Módulos -->
+        <div class="menu-item-row" onclick="toggleSub('sub-tech', this)"><i class="fas fa-motorcycle"></i><span>Tecnicos</span><i class="fas fa-chevron-right chevron"></i></div>
+        <div id="sub-tech" class="submenu">
+             <div class="sub-item" onclick="go('v-tech-list')">Lista de Técnicos</div>
+        </div>
+
+        <div class="menu-item-row" onclick="go('v-files')"><i class="fas fa-cloud-download-alt"></i><span>Gestor de Archivos</span></div>
+        
+        <div class="menu-item-row" onclick="toggleSub('sub-com', this)"><i class="fas fa-briefcase"></i><span>Gestión Comercial</span><i class="fas fa-chevron-right chevron"></i></div>
+        <div class="menu-item-row" onclick="toggleSub('sub-op', this)"><i class="fas fa-hammer"></i><span>Gestión Operativa</span><i class="fas fa-chevron-right chevron"></i></div>
     </div>
 
-    <div id="v-home" class="view active">
-        <h2 style="margin-bottom:20px">Panel Principal</h2>
-        <div class="form-sector">
-            <div class="form-sector-title">Resumen del Día</div>
-            <p style="opacity:0.7">Bienvenido al sistema integrado Expertos MIP.</p>
-        </div>
-    </div>
-
-    <!-- MÓDULO OPERATIVO (SERVICIO) -->
-    <div id="v-serv" class="view">
-        <h3>Gestión Operativa</h3>
-        <div class="form-sector">
-            <div class="form-sector-title"><i class="fas fa-user"></i> Datos del Servicio</div>
-            <input type="text" placeholder="Cliente">
-            <select><option>Tipo: Residencial</option><option>Tipo: Industrial</option></select>
-        </div>
-        <div class="form-sector">
-            <div class="form-sector-title"><i class="fas fa-pen-nib"></i> Firma de Conformidad</div>
-            <div class="signature-box">
-                <canvas id="canvas" height="180"></canvas>
-                <div style="display:flex;justify-content:space-between;margin-top:10px">
-                    <button onclick="clearPad()" style="background:#e74c3c;color:white;border:none;padding:8px 12px;border-radius:8px;font-weight:700">LIMPIAR</button>
-                </div>
-            </div>
-        </div>
-        <button class="btn-primary" onclick="alert('Guardado')">GUARDAR REPORTE</button>
-    </div>
-
-    <!-- OTROS MÓDULOS (PLACEHOLDERS) -->
-    <div id="v-clientes" class="view"><h3>Portal Clientes</h3><div class="form-sector">Búsqueda de historial de clientes...</div></div>
-    <div id="v-notif" class="view"><h3>Notificaciones</h3><div class="form-sector">No hay notificaciones nuevas.</div></div>
-    <div id="v-tech" class="view"><h3>Personal Técnico</h3><div class="form-sector">Listado de técnicos activos...</div></div>
-    <div id="v-fichas" class="view"><h3>Gestor de Archivos</h3><div class="form-sector">Fichas técnicas y Certificados.</div></div>
-    <div id="v-comercial" class="view"><h3>Gestión Comercial</h3><div class="form-sector">Cotizaciones y Ventas.</div></div>
-    <div id="v-admin" class="view"><h3>Gestión Administrativa</h3><div class="form-sector">Gastos y Nómina.</div></div>
-    <div id="v-gerencial" class="view"><h3>Gerencia</h3><div class="form-sector">Indicadores de rendimiento.</div></div>
+    <div id="v-home" class="view active"><h2>Panel Principal</h2><div class="form-sector">Bienvenido al sistema. Use el menú lateral para navegar.</div></div>
+    <div id="v-send-notif" class="view"><h3>Enviar Notificación</h3><div class="form-sector"><input type="text" placeholder="Asunto"><textarea placeholder="Mensaje..."></textarea><button class="btn-primary">Enviar</button></div></div>
+    <div id="v-list-notif" class="view"><h3>Lista de Notificaciones</h3><div class="form-sector">Historial de alertas enviadas.</div></div>
 
     <nav>
         <button onclick="go('v-home', this)" class="active-nav"><i class="fas fa-home"></i></button>
-        <button onclick="go('v-serv', this)"><i class="fas fa-clipboard-list"></i></button>
         <button onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
     </nav>
 </div>
 
 <script>
-let canvas, ctx, drawing = false;
 function login(){document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';}
 function toggleMenu(){document.getElementById('menu-overlay').classList.toggle('open');}
+function toggleSub(id, el){
+    const sub = document.getElementById(id);
+    const chev = el.querySelector('.chevron');
+    sub.classList.toggle('open');
+    chev.classList.toggle('down');
+}
 function go(id, btn){
     document.getElementById('menu-overlay').classList.remove('open');
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    if(btn && btn.tagName === 'BUTTON'){
-        document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active-nav'));
-        btn.classList.add('active-nav');
-    }
-    if(id==='v-serv')setTimeout(initPad,100);
 }
-function initPad(){
-    canvas=document.getElementById('canvas');if(!canvas)return;
-    ctx=canvas.getContext('2d');ctx.lineWidth=3;ctx.lineCap='round';ctx.strokeStyle='#0d0e2b';
-    const st=(e)=>{drawing=true;ctx.beginPath();const r=canvas.getBoundingClientRect();const x=(e.clientX||e.touches[0].clientX)-r.left;const y=(e.clientY||e.touches[0].clientY)-r.top;ctx.moveTo(x,y);e.preventDefault();};
-    const dw=(e)=>{if(!drawing)return;const r=canvas.getBoundingClientRect();const x=(e.clientX||e.touches[0].clientX)-r.left;const y=(e.clientY||e.touches[0].clientY)-r.top;ctx.lineTo(x,y);ctx.stroke();e.preventDefault();};
-    const sp=()=>{drawing=false;};
-    canvas.addEventListener('mousedown',st);canvas.addEventListener('mousemove',dw);canvas.addEventListener('mouseup',sp);
-    canvas.addEventListener('touchstart',st);canvas.addEventListener('touchmove',dw);canvas.addEventListener('touchend',sp);
-}
-function clearPad(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.beginPath();}
-function logout(){location.reload()}
 </script></body></html>

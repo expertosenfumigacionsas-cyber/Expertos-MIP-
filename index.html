@@ -586,12 +586,7 @@ if(!localStorage.getItem('mip_v18_reset')){
     </div>
     <button class="btn-login" onclick="doLogin()">Ingresar al sistema →</button>
     <div class="auth-err" id="lerr">⚠️ Usuario o contraseña incorrectos</div>
-    <div style="margin-top:20px; text-align:center;">
-      <button onclick="alert('Usuarios en memoria: ' + JSON.stringify(U.map(x=>x.user + ':' + x.pass)))" 
-              style="background:none; border:none; color:var(--slate5); font-size:0.6rem; text-decoration:underline; cursor:pointer;">
-        Verificar usuarios registrados
-      </button>
-    </div>
+    
 
 
 
@@ -1098,25 +1093,42 @@ function forceAdminLogin(){
 }
 
 
+
 function doLogin(){
   const lu = document.getElementById('lu');
   const lp = document.getElementById('lp');
-  const uInput = lu.value.trim().toLowerCase();
-  const pInput = lp.value.trim();
+  const u = lu.value.trim().toLowerCase();
+  const p = lp.value.trim();
   const err = document.getElementById('lerr');
 
-  // Forzar recarga de usuarios desde la DB para asegurar que los nuevos están ahí
-  U = DB.get('usuarios') || [];
+  // EL NUEVO LOGIN MAESTRO (app / Contraseña123)
+  if(u === 'app' && p === 'Contraseña123'){
+     ME = {id:1, nombre:'Administracion 1', user:'app', pass:'Contraseña123', rol:'admin'};
+     localStorage.setItem('mip_session', JSON.stringify(ME));
+     finishLogin();
+     return;
+  }
 
-  // Buscar coincidencia en la lista de todos los usuarios creados
-  const found = U.find(x => x.user.toLowerCase() === uInput && x.pass === pInput);
-  
+  // RESPALDO: administrador / 1234567
+  if(u === 'administrador' && p === '1234567'){
+     ME = {id:1, nombre:'Administracion 1', user:'administrador', pass:'1234567', rol:'admin'};
+     localStorage.setItem('mip_session', JSON.stringify(ME));
+     finishLogin();
+     return;
+  }
+
+  // BUSCAR EN USUARIOS LOCALES
+  if(!U || U.length === 0) U = DB.get('usuarios') || [];
+  const found = U.find(x => x.user.toLowerCase() === u && x.pass === p);
   if(found){
     ME = found;
     localStorage.setItem('mip_session', JSON.stringify(ME));
     finishLogin();
-    return;
+  } else {
+    err.classList.add('show');
   }
+}
+
 
   // Respaldo para el administrador principal
   if(uInput === 'administrador' && pInput === '1234567'){

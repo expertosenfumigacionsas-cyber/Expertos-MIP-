@@ -1,25 +1,58 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Expertos MIP Pro</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><style>:root{--p:#28a745;--d:#0d1124;--c:#1abc9c}*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}body{background:#f4f7f6}#ls{position:fixed;top:0;left:0;width:100%;height:100%;background:#1b5e20;display:flex;align-items:center;justify-content:center;z-index:10000}.card-login{background:white;padding:30px;border-radius:30px;width:90%;max-width:380px;text-align:center}.logo-box{width:120px;height:120px;background:white;border-radius:25px;margin:0 auto 15px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid #eee}.logo-circle{width:60px;height:60px;border:3px solid var(--c);border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--d);position:relative}.logo-circle i{color:white;font-size:1.8rem}.logo-name{background:var(--d);color:var(--c);width:100%;padding:5px 0;font-size:0.9rem;font-weight:900;margin-top:5px}#app{display:none;padding-bottom:90px}header{background:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,0.05);position:sticky;top:0;z-index:100}.view{display:none;padding:20px}.active{display:block}.card{background:white;padding:20px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,0.05);margin-bottom:15px}input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:12px}button{width:100%;padding:15px;border:none;border-radius:12px;font-weight:bold;cursor:pointer}nav{position:fixed;bottom:0;width:100%;background:white;display:flex;justify-content:space-around;padding:15px;border-top:1px solid #eee;z-index:1000}.item-m{background:white;padding:20px;border-radius:20px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.05)}.item-m i{font-size:2rem;margin-bottom:10px;display:block;color:var(--d)}#canvas{border:2px dashed var(--p);background:white;border-radius:15px;width:100%;touch-action:none}</style></head><body>
-<div id="ls"><div class="card-login"><div class="logo-box"><div class="logo-circle"><i class="fas fa-mouse"></i></div><div class="logo-name">EXPERTOS</div></div><h2>Expertos MIP</h2><input type="text" id="un" value="Admin"><input type="password" value="******"><button style="background:var(--p);color:white" onclick="login()">INGRESAR</button></div></div>
-<div id="app"><header><div style="font-weight:bold;color:var(--p)">EXPERTOS MIP</div><span id="rt" style="font-size:0.7rem;background:#e8f5e9;color:#2e7d32;padding:5px 12px;border-radius:20px"></span></header>
-<div id="v-home" class="view active"><h3>Menú Principal</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px">
-<div class="item-m" onclick="go('v-serv')"><i class="fas fa-file-contract"></i>Nuevo Servicio</div>
-<div class="item-m" onclick="go('v-reg')"><i class="fas fa-folder-open"></i>Registros</div>
-<div class="item-m" onclick="go('v-fichas')"><i class="fas fa-flask"></i>Fichas Técnicas</div>
-<div class="item-m" onclick="go('v-tech')"><i class="fas fa-user-tie"></i>Personal Técnico</div>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Expertos MIP Pro</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><style>
+:root{--p:#2ecc71;--d:#141e30;--s:#243b55;--c:#1abc9c;--bg:#f0f2f5;--txt:#2c3e50}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter','Segoe UI',sans-serif}
+body{background:var(--bg);color:var(--txt);overflow-x:hidden}
+/* Pantalla de Carga/Login con Gradiente Profesional */
+#ls{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg, #1b5e20 0%, #0d1124 100%);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px}
+.card-login{background:rgba(255,255,255,0.98);padding:40px 30px;border-radius:32px;width:100%;max-width:400px;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,0.3);backdrop-filter:blur(10px)}
+.logo-main{width:140px;height:140px;margin:0 auto 25px;position:relative;background:white;border-radius:24px;padding:10px;box-shadow:0 10px 20px rgba(0,0,0,0.1)}
+.logo-circle{width:80px;height:80px;border:4px solid var(--c);border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--d);margin:0 auto;position:relative}
+.logo-circle i{color:white;font-size:2.5rem}
+.logo-text{background:var(--d);color:var(--c);width:100%;padding:8px 0;font-weight:900;font-size:1.1rem;margin-top:10px;border-radius:8px;letter-spacing:1px}
+input,select,textarea{width:100%;padding:16px;margin:12px 0;border:1.5px solid #e0e0e0;border-radius:16px;background:#fff;font-size:1rem;transition:0.3s}
+input:focus{border-color:var(--c);outline:none;box-shadow:0 0 0 4px rgba(26,188,156,0.1)}
+.btn-primary{width:100%;padding:18px;background:linear-gradient(to right, #1b5e20, #2ecc71);color:white;border:none;border-radius:18px;font-weight:700;font-size:1.1rem;cursor:pointer;box-shadow:0 10px 20px rgba(46,204,113,0.3);transition:0.3s}
+.btn-primary:active{transform:scale(0.98)}
+/* Estilo App Interna */
+#app{display:none;padding-bottom:100px}
+header{background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);padding:20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.03)}
+.view{display:none;padding:25px;max-width:600px;margin:0 auto;animation:slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.active{display:block}
+.glass-card{background:white;padding:25px;border-radius:28px;box-shadow:0 10px 30px rgba(0,0,0,0.04);margin-bottom:20px;border:1px solid rgba(0,0,0,0.02)}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.menu-item{background:white;padding:30px 20px;border-radius:28px;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,0.03);transition:0.3s;border:1px solid #f0f0f0}
+.menu-item:active{transform:scale(0.95);background:#fafafa}
+.menu-item i{font-size:2.5rem;margin-bottom:15px;display:block;background:linear-gradient(to bottom, var(--d), var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.menu-item b{font-size:0.95rem;color:var(--d);font-weight:700}
+nav{position:fixed;bottom:25px;left:20px;right:20px;background:rgba(20,30,48,0.95);backdrop-filter:blur(15px);display:flex;justify-content:space-around;padding:15px;border-radius:24px;box-shadow:0 15px 35px rgba(0,0,0,0.2);z-index:1000}
+nav button{background:none;border:none;color:rgba(255,255,255,0.5);font-size:1.4rem;cursor:pointer;transition:0.3s}
+nav button.active-nav{color:var(--c);transform:translateY(-5px)}
+#canvas{background:white;border:2px solid #eee;border-radius:20px;width:100%;touch-action:none}
+h3{font-size:1.5rem;font-weight:800;margin-bottom:20px;color:var(--d)}
+</style></head><body>
+<div id="ls"><div class="card-login"><div class="logo-main"><div class="logo-circle"><i class="fas fa-mouse"></i></div><div class="logo-text">EXPERTOS</div></div><h2>Panel de Control</h2><p style="color:#666;margin:10px 0 25px">Inicie sesión para continuar</p><input type="text" id="un" placeholder="Usuario"><input type="password" placeholder="Contraseña"><button class="btn-primary" onclick="login()">Ingresar ahora</button></div></div>
+<div id="app"><header><div style="font-weight:900;font-size:1.2rem;color:var(--d)">EXPERTOS <span style="color:var(--c)">MIP</span></div><div id="rt" style="font-weight:700;font-size:0.75rem;background:var(--d);color:white;padding:6px 14px;border-radius:12px"></div></header>
+<div id="v-home" class="view active"><h3>Bienvenido</h3><div class="menu-grid">
+<div class="menu-item" onclick="go('v-serv')"><i class="fas fa-clipboard-check"></i><b>Nuevo Servicio</b></div>
+<div class="menu-item" onclick="go('v-reg')"><i class="fas fa-history"></i><b>Registros</b></div>
+<div class="menu-item" onclick="go('v-fichas')"><i class="fas fa-vial"></i><b>Fichas Técnicas</b></div>
+<div class="menu-item" onclick="go('v-tech')"><i class="fas fa-id-card"></i><b>Personal</b></div>
 </div></div>
-<div id="v-serv" class="view"><h3>Nuevo Servicio</h3><div class="card"><input type="text" id="s-cli" placeholder="Cliente"><textarea placeholder="Productos utilizados"></textarea><label>Firma</label><canvas id="canvas" height="120"></canvas><button style="background:var(--p);color:white;margin-top:10px" onclick="alert('Guardado');go('v-home')">GUARDAR TODO</button></div></div>
-<div id="v-reg" class="view"><h3>Historial de Registros</h3><div id="rl"></div></div>
-<div id="v-fichas" class="view"><h3>Fichas Técnicas de Productos</h3><div class="card"><b>Deltametrina 2.5</b><p style="font-size:0.8rem;color:#777">Insecticida piretroide para control de rastreros.</p><button style="height:30px;padding:0;font-size:0.7rem;margin-top:5px">VER PDF</button></div><div class="card"><b>Gel Cucarachicida</b><p style="font-size:0.8rem;color:#777">Cebo específico para Blatella Germánica.</p><button style="height:30px;padding:0;font-size:0.7rem;margin-top:5px">VER PDF</button></div></div>
-<div id="v-tech" class="view"><h3>Personal Técnico</h3><div class="card"><b>Técnico 1</b><p>ID: 102030</p></div><button onclick="go('v-home')">Regresar</button></div>
-<nav><button onclick="go('v-home')"><i class="fas fa-home"></i></button><button onclick="go('v-reg')"><i class="fas fa-list"></i></button><button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></nav></div>
+<div id="v-serv" class="view"><h3>Reporte de Servicio</h3><div class="glass-card"><label>Datos del Cliente</label><input type="text" id="s-cli" placeholder="Nombre de la empresa o persona"><label>Productos y Dosificación</label><textarea id="s-prod" style="height:100px" placeholder="Detalle productos utilizados..."></textarea><label>Firma Autorizada</label><canvas id="canvas" height="150"></canvas><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px"><button style="background:#f39c12;color:white;padding:15px;border-radius:14px;border:none;font-weight:700" onclick="alert('En Proceso')">EN PROCESO</button><button style="background:#27ae60;color:white;padding:15px;border-radius:14px;border:none;font-weight:700" onclick="alert('Realizado')">REALIZADO</button></div><button class="btn-primary" style="margin-top:20px" onclick="saveAll()">GUARDAR REPORTE</button></div></div>
+<div id="v-reg" class="view"><h3>Historial Maestro</h3><div id="rl"></div></div>
+<div id="v-fichas" class="view"><h3>Biblioteca Técnica</h3><div class="glass-card"><b>📌 Deltametrina SC</b><p style="color:#666;font-size:0.85rem">Concentrado para control de plagas rastreras.</p><button style="margin-top:10px;background:#eee;border:none;padding:8px 15px;border-radius:8px">Descargar Ficha</button></div></div>
+<div id="v-tech" class="view"><h3>Talento Humano</h3><div class="glass-card"><b>👷 Técnico Operativo 01</b><p style="color:#666">Cédula: ******** | Bogotá</p></div></div>
+<nav><button onclick="go('v-home', this)" class="active-nav"><i class="fas fa-home"></i></button><button onclick="go('v-serv', this)"><i class="fas fa-file-signature"></i></button><button onclick="go('v-reg', this)"><i class="fas fa-database"></i></button><button onclick="logout()"><i class="fas fa-power-off"></i></button></nav></div>
 <script>
 let canvas, ctx, drawing = false;
-function login(){document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';document.getElementById('rt').innerText='ADMIN';}
-function go(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='v-serv')setTimeout(initPad,100);if(id==='v-reg')renderReg();}
-function initPad(){canvas=document.getElementById('canvas');if(!canvas)return;ctx=canvas.getContext('2d');canvas.addEventListener('mousedown',st);canvas.addEventListener('mousemove',dw);canvas.addEventListener('mouseup',sp);canvas.addEventListener('touchstart',st);canvas.addEventListener('touchmove',dw);canvas.addEventListener('touchend',sp);}
+function login(){const u=document.getElementById('un').value||'Admin';document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';document.getElementById('rt').innerText=u.toUpperCase();localStorage.setItem('mip_session',u);}
+function go(id, btn){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');if(btn){document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active-nav'));btn.classList.add('active-nav');}if(id==='v-serv')setTimeout(initPad,100);if(id==='v-reg')renderReg();}
+function initPad(){canvas=document.getElementById('canvas');if(!canvas)return;ctx=canvas.getContext('2d');ctx.lineWidth=2;ctx.lineCap='round';ctx.strokeStyle='#141e30';canvas.addEventListener('mousedown',st);canvas.addEventListener('mousemove',dw);canvas.addEventListener('mouseup',sp);canvas.addEventListener('touchstart',st);canvas.addEventListener('touchmove',dw);canvas.addEventListener('touchend',sp);}
 function st(e){drawing=true;ctx.beginPath();const r=canvas.getBoundingClientRect();const x=(e.clientX||e.touches[0].clientX)-r.left;const y=(e.clientY||e.touches[0].clientY)-r.top;ctx.moveTo(x,y);e.preventDefault();}
 function dw(e){if(!drawing)return;const r=canvas.getBoundingClientRect();const x=(e.clientX||e.touches[0].clientX)-r.left;const y=(e.clientY||e.touches[0].clientY)-r.top;ctx.lineTo(x,y);ctx.stroke();e.preventDefault();}
 function sp(){drawing=false;}
-function renderReg(){const l=document.getElementById('rl');l.innerHTML='<div class="card">Servicio #452 - Restaurante El Sol<br><small>14/07/2026 - Realizado</small></div>';}
+function renderReg(){const l=document.getElementById('rl');l.innerHTML='<div class="glass-card"><b style="color:var(--c)">ORDEN #1092</b><br>Cliente: Corporativo Alpha<br><small>Finalizado: Hoy 03:25 AM</small></div>';}
+function saveAll(){alert('✅ REPORTE GUARDADO CON ÉXITO');go('v-home');}
 function logout(){location.reload()}
 </script></body></html>

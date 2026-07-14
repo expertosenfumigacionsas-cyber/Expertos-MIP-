@@ -732,7 +732,7 @@ if(!localStorage.getItem('mip_v18_reset')){
         <div class="cert-preview-box" id="cert-empresa-prev" onclick="document.getElementById('us-cert-empresa').click()">
           <span style="color:var(--slate4); font-size:0.85rem;">Click para subir certificado</span>
         </div>
-        <input type="file" id="us-cert-empresa" accept="image/*" onchange="loadCertEmpresa(this)" style="display:none;"/>
+        <input type="file" id="us-cert-empresa" accept="image/*,.pdf,.doc,.docx" onchange="loadCertEmpresa(this)" style="display:none;"/>
       </div>
 
       <div class="backup-card">
@@ -846,17 +846,17 @@ if(!localStorage.getItem('mip_v18_reset')){
         <div class="foto-slot" id="slot-a" onclick="trigFoto('foto-a')">
           <span class="foto-add">📷</span>
           <span class="foto-slot-lbl">Antes</span>
-          <input type="file" id="foto-a" accept="image/*" capture="environment" style="display:none;" onchange="loadFoto(this,'slot-a','prev-a')"/>
+          <input type="file" id="foto-a" accept="image/*,.pdf,.doc,.docx" capture="environment" style="display:none;" onchange="loadFoto(this,'slot-a','prev-a')"/>
         </div>
         <div class="foto-slot" id="slot-d" onclick="trigFoto('foto-d')">
           <span class="foto-add">📷</span>
           <span class="foto-slot-lbl">Durante</span>
-          <input type="file" id="foto-d" accept="image/*" capture="environment" style="display:none;" onchange="loadFoto(this,'slot-d','prev-d')"/>
+          <input type="file" id="foto-d" accept="image/*,.pdf,.doc,.docx" capture="environment" style="display:none;" onchange="loadFoto(this,'slot-d','prev-d')"/>
         </div>
         <div class="foto-slot" id="slot-p" onclick="trigFoto('foto-p')">
           <span class="foto-add">📷</span>
           <span class="foto-slot-lbl">Después</span>
-          <input type="file" id="foto-p" accept="image/*" capture="environment" style="display:none;" onchange="loadFoto(this,'slot-p','prev-p')"/>
+          <input type="file" id="foto-p" accept="image/*,.pdf,.doc,.docx" capture="environment" style="display:none;" onchange="loadFoto(this,'slot-p','prev-p')"/>
         </div>
       </div>
     </div>
@@ -1045,12 +1045,7 @@ function loadCertEmpresa(input){
   r.readAsDataURL(file);
 }
 
-function renderCertEmpresa(){
-  const data = localStorage.getItem('mip_cert_empresa');
-  const box = document.getElementById('cert-empresa-prev');
-  if(!box) return;
-  if(data){
-    box.innerHTML = `<img src="${data}" alt="Certificado Empresa"/>`;
+" alt="Certificado Empresa"/>`;
   } else {
     box.innerHTML = `<span style="color:var(--slate4); font-size:0.85rem;">Click para subir certificado</span>`;
   }
@@ -1337,7 +1332,7 @@ function renderFotoSlot(slotId,inputId,data){
     slot.onclick=null;
   }else{
     slot.innerHTML=`<span class="foto-add">📷</span><span class="foto-slot-lbl">${lbl}</span>
-      <input type="file" id="${inputId}" accept="image/*" capture="environment" style="display:none;" onchange="loadFoto(this,'${slotId}','${inputId}')"/>`;
+      <input type="file" id="${inputId}" accept="image/*,.pdf,.doc,.docx" capture="environment" style="display:none;" onchange="loadFoto(this,'${slotId}','${inputId}')"/>`;
     slot.classList.remove('filled');
     slot.onclick=()=>trigFoto(inputId);
   }

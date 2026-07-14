@@ -1,31 +1,44 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Expertos MIP</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><style>:root{--p:#27ae60;--s:#2980b9;--t:#f39c12;--d:#1a1a1a;--l:#f4f7f6}*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}body{background:var(--l);color:#333;overflow-x:hidden}#ls{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--d);display:flex;align-items:center;justify-content:center;z-index:9999}#app{display:none}.card{background:white;padding:30px;border-radius:25px;width:90%;max-width:380px;text-align:center}.btn{width:100%;height:70px;border:none;border-radius:15px;font-size:1.1rem;font-weight:bold;color:white;margin-bottom:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}header{background:var(--p);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px}.item{background:white;padding:20px;border-radius:20px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.05);cursor:pointer}.item i{font-size:2.5rem;margin-bottom:10px;display:block}.disabled{opacity:0.4;filter:grayscale(1);pointer-events:none}.view{display:none;padding:20px;padding-bottom:100px}.view.active{display:block}nav{position:fixed;bottom:0;width:100%;background:white;display:flex;justify-content:space-around;padding:15px;border-top:1px solid #eee;z-index:100}nav button{border:none;background:none;color:#999;font-size:1.5rem;cursor:pointer}nav button.active{color:var(--p)}</style></head><body>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Expertos MIP</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><style>:root{--p:#27ae60;--s:#2980b9;--t:#f39c12;--d:#1a1a1a;--l:#f4f7f6}*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}body{background:var(--l);color:#333;overflow-x:hidden}#ls{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--d);display:flex;align-items:center;justify-content:center;z-index:9999}#app{display:none}.card{background:white;padding:30px;border-radius:25px;width:90%;max-width:380px;text-align:center}.btn{width:100%;height:70px;border:none;border-radius:15px;font-size:1.1rem;font-weight:bold;color:white;margin-bottom:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}header{background:var(--p);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px}.item{background:white;padding:20px;border-radius:20px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.05);cursor:pointer}.item i{font-size:2.5rem;margin-bottom:10px;display:block}.disabled{opacity:0.4;filter:grayscale(1);pointer-events:none}.view{display:none;padding:20px;padding-bottom:100px}.view.active{display:block}nav{position:fixed;bottom:0;width:100%;background:white;display:flex;justify-content:space-around;padding:15px;border-top:1px solid #eee;z-index:100}nav button{border:none;background:none;color:#999;font-size:1.5rem;cursor:pointer}nav button.active{color:var(--p)}input{width:100%;padding:15px;margin-bottom:15px;border:1px solid #ddd;border-radius:10px;font-size:1rem}</style></head><body>
 
-<div id="ls"><div class="card"><div style="font-size:4.5rem;color:var(--p);margin-bottom:15px"><i class="fas fa-shield-virus"></i></div><h2 style="margin-bottom:5px">EXPERTOS MIP</h2><p style="margin-bottom:25px;color:#777">Control Profesional de Plagas</p><button class="btn" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-tie"></i> DUEÑO</button><button class="btn" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-code"></i> PROG</button><button class="btn" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-briefcase"></i> TÉCNICO</button></div></div>
+<div id="ls">
+    <div class="card">
+        <div style="font-size:4.5rem;color:var(--p);margin-bottom:15px"><i class="fas fa-shield-virus"></i></div>
+        <h2 style="margin-bottom:5px">EXPERTOS MIP</h2>
+        <p style="margin-bottom:20px;color:#777">Ingrese su nombre o seleccione perfil</p>
+        
+        <input type="text" id="username" placeholder="Su nombre (opcional)">
+        
+        <button class="btn" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-tie"></i> DUEÑO</button>
+        <button class="btn" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-code"></i> PROG</button>
+        <button class="btn" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-briefcase"></i> TÉCNICO</button>
+    </div>
+</div>
 
 <div id="app">
-    <header><div><i class="fas fa-shield-virus"></i> <span style="font-weight:bold">EXPERTOS MIP</span></div><span id="role-badge" style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:15px;font-size:0.8rem">Rol</span></header>
+    <header>
+        <div><i class="fas fa-shield-virus"></i> <span id="app-title" style="font-weight:bold">EXPERTOS MIP</span></div>
+        <span id="role-badge" style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:15px;font-size:0.8rem">Rol</span>
+    </header>
     <div id="v-home" class="view active"><div class="grid" id="grid-home"></div></div>
-    <div id="v-servicios" class="view"><h2><i class="fas fa-file-signature"></i> Servicios</h2><p>Órdenes de trabajo.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
-    <div id="v-clientes" class="view"><h2><i class="fas fa-users"></i> Clientes</h2><p>Gestión de base de datos.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
-    <div id="v-inventario" class="view"><h2><i class="fas fa-boxes"></i> Inventario</h2><p>Químicos e insumos.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
-    <div id="v-agenda" class="view"><h2><i class="fas fa-calendar-alt"></i> Agenda</h2><p>Programación.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
-    <div id="v-reportes" class="view"><h2><i class="fas fa-file-pdf"></i> Reportes</h2><p>Certificados.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
-    <div id="v-config" class="view"><h2><i class="fas fa-cogs"></i> Configuración</h2><p>Ajustes.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
-    <nav><button onclick="goView('v-home')" id="n-home" class="active"><i class="fas fa-home"></i></button><button onclick="goView('v-servicios')"><i class="fas fa-file-signature"></i></button><button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></nav>
+    <div id="v-servicios" class="view"><h2><i class="fas fa-file-signature"></i> Servicios</h2><p>Registro de órdenes.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
+    <div id="v-clientes" class="view"><h2><i class="fas fa-users"></i> Clientes</h2><p>Base de datos.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
+    <nav><button onclick="goView('v-home')" id="n-home" class="active"><i class="fas fa-home"></i></button><button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></nav>
 </div>
 
 <script>
 function login(r){
-    const u={admin:{n:'Dueño',r:'admin',c:'#27ae60'},prog:{n:'Prog',r:'admin',c:'#2980b9'},tech:{n:'Técnico',r:'tecnico',c:'#f39c12'}};
+    const nameInput = document.getElementById('username').value.trim();
+    const u={
+        admin:{n: nameInput || 'Dueño', r:'admin', c:'#27ae60'},
+        prog:{n: nameInput || 'Programador', r:'admin', c:'#2980b9'},
+        tech:{n: nameInput || 'Técnico', r:'tecnico', c:'#f39c12'}
+    };
     localStorage.setItem('mip_session',JSON.stringify(u[r]));
     renderApp();
 }
 function goView(id){
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    const target = document.getElementById(id);
-    if(target) target.classList.add('active');
-    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-    if(id==='v-home')document.getElementById('n-home').classList.add('active');
+    document.getElementById(id).classList.add('active');
 }
 function renderApp(){
     const s=localStorage.getItem('mip_session');
@@ -33,25 +46,25 @@ function renderApp(){
     const u=JSON.parse(s);
     document.getElementById('ls').style.display='none';
     document.getElementById('app').style.display='block';
-    document.getElementById('role-badge').innerText=u.n;
-    document.getElementById('role-badge').style.background=u.c;
+    document.getElementById('role-badge').innerText = u.n;
+    document.getElementById('role-badge').style.background = u.c;
     const g=document.getElementById('grid-home');
     g.innerHTML='';
     const m=[
         {n:'Servicios',i:'fa-file-signature',v:'v-servicios',r:['admin','tecnico']},
         {n:'Clientes',i:'fa-users',v:'v-clientes',r:['admin']},
-        {n:'Inventario',i:'fa-boxes',v:'v-inventario',r:['admin','tecnico']},
-        {n:'Agenda',i:'fa-calendar-alt',v:'v-agenda',r:['admin','tecnico']},
-        {n:'Reportes',i:'fa-file-pdf',v:'v-reportes',r:['admin']},
-        {n:'Configuración',i:'fa-cogs',v:'v-config',r:['admin']}
+        {n:'Inventario',i:'fa-boxes',v:'v-home',r:['admin','tecnico']},
+        {n:'Agenda',i:'fa-calendar-alt',v:'v-home',r:['admin','tecnico']},
+        {n:'Reportes',i:'fa-file-pdf',v:'v-home',r:['admin']},
+        {n:'Configuración',i:'fa-cogs',v:'v-home',r:['admin']}
     ];
     m.forEach(t=>{
         const a=t.r.includes(u.r);
-        const item = document.createElement('div');
-        item.className = 'item' + (a ? '' : ' disabled');
-        item.innerHTML = `<i class="fas ${t.i}" style="color:${a?u.c:'#ccc'}"></i><span style="font-size:0.85rem;font-weight:bold">${t.n}</span>`;
-        if(a) item.onclick = () => goView(t.v);
-        g.appendChild(item);
+        const div = document.createElement('div');
+        div.className = 'item' + (a ? '' : ' disabled');
+        div.innerHTML = `<i class="fas ${t.i}" style="color:${a?u.c:'#ccc'}"></i><span style="font-size:0.85rem;font-weight:bold">${t.n}</span>`;
+        if(a) div.onclick = () => goView(t.v);
+        g.appendChild(div);
     });
 }
 function logout(){localStorage.clear();location.reload();}

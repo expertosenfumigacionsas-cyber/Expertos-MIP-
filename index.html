@@ -1,38 +1,54 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Expertos MIP</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><style>:root{--p:#27ae60;--s:#2980b9;--t:#f39c12;--d:#1a1a1a;--l:#f4f7f6}*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}body{background:var(--l);color:#333;overflow-x:hidden}#ls{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--d);display:flex;align-items:center;justify-content:center;z-index:9999}#app{display:none}.card{background:white;padding:30px;border-radius:25px;width:90%;max-width:380px;text-align:center}.btn{width:100%;height:70px;border:none;border-radius:15px;font-size:1.1rem;font-weight:bold;color:white;margin-bottom:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}header{background:var(--p);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px}.item{background:white;padding:20px;border-radius:20px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.05);cursor:pointer}.item i{font-size:2.5rem;margin-bottom:10px;display:block}.disabled{opacity:0.4;filter:grayscale(1);pointer-events:none}.view{display:none;padding:20px;padding-bottom:100px}.view.active{display:block}nav{position:fixed;bottom:0;width:100%;background:white;display:flex;justify-content:space-around;padding:15px;border-top:1px solid #eee;z-index:100}nav button{border:none;background:none;color:#999;font-size:1.5rem;cursor:pointer}nav button.active{color:var(--p)}input{width:100%;padding:15px;margin-bottom:15px;border:1px solid #ddd;border-radius:10px;font-size:1rem}</style></head><body>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Expertos MIP</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><style>:root{--p:#27ae60;--s:#2980b9;--t:#f39c12;--d:#1a1a1a;--l:#f4f7f6}*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}body{background:var(--l);color:#333;overflow-x:hidden}#ls{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--d);display:flex;align-items:center;justify-content:center;z-index:9999}#app{display:none}.card{background:white;padding:30px;border-radius:25px;width:90%;max-width:380px;text-align:center}.btn{width:100%;height:65px;border:none;border-radius:15px;font-size:1.1rem;font-weight:bold;color:white;margin-bottom:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}header{background:var(--p);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.view{display:none;padding:20px;padding-bottom:100px}.view.active{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.item{background:white;padding:20px;border-radius:20px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.05);cursor:pointer}.item i{font-size:2.2rem;margin-bottom:10px;display:block}.disabled{opacity:0.4;filter:grayscale(1);pointer-events:none}nav{position:fixed;bottom:0;width:100%;background:white;display:flex;justify-content:space-around;padding:15px;border-top:1px solid #eee;z-index:100}nav button{border:none;background:none;color:#999;font-size:1.5rem}/* FORMS */.form-card{background:white;padding:20px;border-radius:20px;box-shadow:0 4px 10px rgba(0,0,0,0.05)}input,select,textarea{width:100%;padding:12px;margin-bottom:15px;border:1px solid #ddd;border-radius:10px;font-size:1rem}label{display:block;margin-bottom:5px;font-weight:bold;font-size:0.9rem;color:#555}.btn-save{background:var(--p);color:white;border:none;padding:15px;width:100%;border-radius:10px;font-weight:bold;font-size:1.1rem;cursor:pointer}</style></head><body>
 
-<div id="ls">
-    <div class="card">
-        <div style="font-size:4.5rem;color:var(--p);margin-bottom:15px"><i class="fas fa-shield-virus"></i></div>
-        <h2 style="margin-bottom:5px">EXPERTOS MIP</h2>
-        <p style="margin-bottom:20px;color:#777">Ingrese su nombre o seleccione perfil</p>
-        
-        <input type="text" id="username" placeholder="Su nombre (opcional)">
-        
-        <button class="btn" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-tie"></i> DUEÑO</button>
-        <button class="btn" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-code"></i> PROG</button>
-        <button class="btn" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-briefcase"></i> TÉCNICO</button>
-    </div>
-</div>
+<div id="ls"><div class="card"><div style="font-size:4rem;color:var(--p);margin-bottom:10px"><i class="fas fa-shield-virus"></i></div><h2>EXPERTOS MIP</h2><p style="margin-bottom:20px;color:#777">Identificación de Usuario</p><input type="text" id="username" placeholder="Su nombre"><button class="btn" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-tie"></i> DUEÑO</button><button class="btn" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-code"></i> PROG</button><button class="btn" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-briefcase"></i> TÉCNICO</button></div></div>
 
 <div id="app">
-    <header>
-        <div><i class="fas fa-shield-virus"></i> <span id="app-title" style="font-weight:bold">EXPERTOS MIP</span></div>
-        <span id="role-badge" style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:15px;font-size:0.8rem">Rol</span>
-    </header>
-    <div id="v-home" class="view active"><div class="grid" id="grid-home"></div></div>
-    <div id="v-servicios" class="view"><h2><i class="fas fa-file-signature"></i> Servicios</h2><p>Registro de órdenes.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
-    <div id="v-clientes" class="view"><h2><i class="fas fa-users"></i> Clientes</h2><p>Base de datos.</p><button onclick="goView('v-home')" style="margin-top:20px">Volver</button></div>
-    <nav><button onclick="goView('v-home')" id="n-home" class="active"><i class="fas fa-home"></i></button><button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></nav>
+    <header><div><i class="fas fa-shield-virus"></i> <span style="font-weight:bold">EXPERTOS MIP</span></div><span id="role-badge" style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:15px;font-size:0.8rem">Rol</span></header>
+    
+    <div id="v-home" class="view active">
+        <h3 style="margin-bottom:15px">Dashboard</h3>
+        <div class="grid" id="grid-home"></div>
+    </div>
+
+    <div id="v-new-service" class="view">
+        <h3 style="margin-bottom:15px"><i class="fas fa-plus-circle"></i> Registrar Nuevo Servicio</h3>
+        <div class="form-card">
+            <label>Cliente / Empresa</label>
+            <input type="text" id="s-client" placeholder="Nombre del cliente">
+            
+            <label>Tipo de Fumigación</label>
+            <select id="s-type">
+                <option>Control de Insectos Rastreros</option>
+                <option>Control de Voladores</option>
+                <option>Desratización (Roedores)</option>
+                <option>Desinfección de Áreas</option>
+                <option>Lavado de Tanques</option>
+            </select>
+            
+            <label>Ubicación / Dirección</label>
+            <input type="text" id="s-loc" placeholder="Bogotá, Calle...">
+            
+            <label>Observaciones</label>
+            <textarea id="s-obs" rows="3" placeholder="Detalles del servicio..."></textarea>
+            
+            <button class="btn-save" onclick="saveService()"><i class="fas fa-save"></i> GUARDAR SERVICIO</button>
+            <button onclick="goView('v-home')" style="width:100%;background:none;border:none;margin-top:10px;color:#999">Cancelar</button>
+        </div>
+    </div>
+
+    <nav>
+        <button onclick="goView('v-home')"><i class="fas fa-home"></i></button>
+        <button onclick="goView('v-new-service')"><i class="fas fa-plus-square"></i></button>
+        <button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+    </nav>
 </div>
 
 <script>
+let SERVICES = JSON.parse(localStorage.getItem('mip_services')) || [];
+
 function login(r){
-    const nameInput = document.getElementById('username').value.trim();
-    const u={
-        admin:{n: nameInput || 'Dueño', r:'admin', c:'#27ae60'},
-        prog:{n: nameInput || 'Programador', r:'admin', c:'#2980b9'},
-        tech:{n: nameInput || 'Técnico', r:'tecnico', c:'#f39c12'}
-    };
+    const name = document.getElementById('username').value.trim() || 'Usuario';
+    const u={admin:{n:name,r:'admin',c:'#27ae60'},prog:{n:name,r:'admin',c:'#2980b9'},tech:{n:name,r:'tecnico',c:'#f39c12'}};
     localStorage.setItem('mip_session',JSON.stringify(u[r]));
     renderApp();
 }
@@ -46,17 +62,15 @@ function renderApp(){
     const u=JSON.parse(s);
     document.getElementById('ls').style.display='none';
     document.getElementById('app').style.display='block';
-    document.getElementById('role-badge').innerText = u.n;
-    document.getElementById('role-badge').style.background = u.c;
+    document.getElementById('role-badge').innerText=u.n;
+    document.getElementById('role-badge').style.background=u.c;
     const g=document.getElementById('grid-home');
     g.innerHTML='';
     const m=[
-        {n:'Servicios',i:'fa-file-signature',v:'v-servicios',r:['admin','tecnico']},
-        {n:'Clientes',i:'fa-users',v:'v-clientes',r:['admin']},
-        {n:'Inventario',i:'fa-boxes',v:'v-home',r:['admin','tecnico']},
-        {n:'Agenda',i:'fa-calendar-alt',v:'v-home',r:['admin','tecnico']},
-        {n:'Reportes',i:'fa-file-pdf',v:'v-home',r:['admin']},
-        {n:'Configuración',i:'fa-cogs',v:'v-home',r:['admin']}
+        {n:'Nuevo Servicio',i:'fa-plus-circle',v:'v-new-service',r:['admin','tecnico']},
+        {n:'Historial',i:'fa-history',v:'v-home',r:['admin','tecnico']},
+        {n:'Clientes',i:'fa-users',v:'v-home',r:['admin']},
+        {n:'Inventario',i:'fa-boxes',v:'v-home',r:['admin','tecnico']}
     ];
     m.forEach(t=>{
         const a=t.r.includes(u.r);
@@ -66,6 +80,23 @@ function renderApp(){
         if(a) div.onclick = () => goView(t.v);
         g.appendChild(div);
     });
+}
+function saveService(){
+    const client = document.getElementById('s-client').value;
+    if(!client){ alert('Ponga el nombre del cliente'); return; }
+    const newS = {
+        id: Date.now(),
+        client: client,
+        type: document.getElementById('s-type').value,
+        loc: document.getElementById('s-loc').value,
+        obs: document.getElementById('s-obs').value,
+        date: new Date().toLocaleString(),
+        tech: JSON.parse(localStorage.getItem('mip_session')).n
+    };
+    SERVICES.push(newS);
+    localStorage.setItem('mip_services', JSON.stringify(SERVICES));
+    alert('✅ Servicio registrado con éxito');
+    goView('v-home');
 }
 function logout(){localStorage.clear();location.reload();}
 window.onload=renderApp;

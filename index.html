@@ -3,151 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Expertos MIP - Plataforma de Gestión</title>
+    <title>Expertos MIP</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --p: #27ae60; --s: #2980b9; --t: #f39c12; --d: #1a1a1a; --l: #f4f7f6; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background: var(--l); color: #333; }
         
-        /* PANTALLA DE ACCESO */
+        /* LOGIN */
         #ls { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--d); display: flex; align-items: center; justify-content: center; z-index: 10000; }
-        .card-login { background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        .btn-role { width: 100%; height: 60px; border: none; border-radius: 12px; font-size: 1rem; font-weight: bold; color: white; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
-        .btn-role:active { transform: scale(0.98); }
-        input#uname { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; text-align: center; font-size: 1rem; }
+        .card-login { background: white; padding: 40px 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; }
+        
+        /* LOGO EMPRESA */
+        .logo-container { position: relative; display: inline-block; margin-bottom: 20px; }
+        .logo-main { font-size: 5rem; color: var(--p); }
+        .logo-overlay { position: absolute; bottom: 0; right: 0; font-size: 2rem; color: var(--d); background: white; border-radius: 50%; padding: 5px; }
+        
+        .btn-role { width: 100%; height: 60px; border: none; border-radius: 15px; font-size: 1rem; font-weight: bold; color: white; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        input#uname { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #eee; border-radius: 12px; text-align: center; font-size: 1.1rem; }
 
-        /* APP PRINCIPAL */
+        /* APP */
         #app { display: none; padding-bottom: 80px; }
-        header { background: var(--p); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        header { background: var(--p); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header-logo { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 1.2rem; }
+        
         .view { display: none; padding: 20px; animation: fadeIn 0.4s; }
         .view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* DASHBOARD GRID */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .item { background: white; padding: 20px; border-radius: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
-        .item:active { background: #f0f0f0; border-color: var(--p); }
-        .item i { font-size: 2.2rem; margin-bottom: 10px; display: block; }
-        .disabled { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+        .item { background: white; padding: 25px 15px; border-radius: 25px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); cursor: pointer; }
+        .item i { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+        .disabled { opacity: 0.3; filter: grayscale(1); pointer-events: none; }
 
-        /* FORMULARIOS */
-        .f-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        label { display: block; margin-top: 10px; font-weight: bold; font-size: 0.85rem; color: #666; }
-        input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
-        .btn-main { background: var(--p); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1rem; margin-top: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-
-        /* NAVEGACIÓN */
-        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px; border-top: 1px solid #eee; z-index: 1000; }
-        nav button { border: none; background: none; color: #ccc; font-size: 1.5rem; cursor: pointer; }
+        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #eee; z-index: 1000; }
+        nav button { border: none; background: none; color: #ccc; font-size: 1.6rem; }
         nav button.active { color: var(--p); }
     </style>
 </head>
 <body>
 
-    <!-- PANTALLA LOGIN -->
     <div id="ls">
         <div class="card-login">
-            <div style="font-size:4.5rem;color:var(--p);margin-bottom:10px"><i class="fas fa-shield-virus"></i></div>
-            <h2 style="color:var(--d)">EXPERTOS MIP</h2>
-            <p style="margin-bottom:20px;color:#888">Gestión de Control de Plagas</p>
-            <input type="text" id="uname" placeholder="Nombre de quien ingresa">
-            <button class="btn-role" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-tie"></i> ACCESO DUEÑO</button>
-            <button class="btn-role" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-code"></i> PROGRAMADOR</button>
-            <button class="btn-role" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-briefcase"></i> TÉCNICO CAMPO</button>
+            <div class="logo-container">
+                <i class="fas fa-shield-virus logo-main"></i>
+                <i class="fas fa-bug logo-overlay"></i>
+            </div>
+            <h1 style="color:var(--d); font-size: 1.8rem; margin-bottom: 5px;">EXPERTOS MIP</h1>
+            <p style="margin-bottom:25px; color:#777; font-weight: 500;">Control Profesional de Plagas</p>
+            
+            <input type="text" id="uname" placeholder="👤 Nombre del Usuario">
+            
+            <button class="btn-role" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-shield"></i> DUEÑO</button>
+            <button class="btn-role" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-laptop-code"></i> PROGRAMADOR</button>
+            <button class="btn-role" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-pills"></i> TÉCNICO</button>
         </div>
     </div>
 
-    <!-- CONTENIDO APP -->
     <div id="app">
         <header>
-            <div><i class="fas fa-shield-virus"></i> <span style="font-weight:bold">EXPERTOS MIP</span></div>
-            <span id="badge" style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:15px;font-size:0.75rem"></span>
+            <div class="header-logo"><i class="fas fa-shield-virus"></i> EXPERTOS MIP</div>
+            <span id="role-tag" style="background:rgba(255,255,255,0.2); padding:5px 12px; border-radius:20px; font-size:0.8rem; font-weight:bold;"></span>
         </header>
 
-        <!-- DASHBOARD -->
         <div id="v-home" class="view active">
-            <h3 style="margin-bottom:15px">Módulos Principales</h3>
-            <div class="grid" id="menu-grid"></div>
+            <h3 style="margin-bottom:20px; color:#555;">Panel Principal</h3>
+            <div class="grid" id="main-menu"></div>
         </div>
 
-        <!-- FORMULARIO SERVICIO -->
+        <!-- SECCIONES -->
         <div id="v-serv" class="view">
             <h3><i class="fas fa-plus-circle"></i> Nuevo Servicio</h3>
-            <div class="f-card" style="margin-top:10px">
-                <label>Nombre del Cliente</label>
-                <input type="text" id="cli-n" placeholder="Empresa o Persona">
-                <label>Tipo de Fumigación</label>
-                <select id="cli-t">
-                    <option>Desratización</option>
-                    <option>C. Insectos Rastreros</option>
-                    <option>C. Insectos Voladores</option>
-                    <option>Lavado de Tanques</option>
-                    <option>Desinfección</option>
-                </select>
-                <label>Dirección del Sitio</label>
-                <input type="text" id="cli-d" placeholder="Dirección completa">
-                <label>Registro Fotográfico (Opcional)</label>
-                <input type="file" accept="image/*" capture="camera">
-                <label>Observaciones</label>
-                <textarea id="cli-o" rows="3" placeholder="Detalles del hallazgo..."></textarea>
-                <button class="btn-main" onclick="save()"><i class="fas fa-check-circle"></i> REGISTRAR SERVICIO</button>
-            </div>
-        </div>
-
-        <!-- CLIENTES -->
-        <div id="v-clients" class="view">
-            <h3><i class="fas fa-users"></i> Mis Clientes</h3>
-            <div id="list-c" style="margin-top:10px">
-                <p style="text-align:center;color:#999;padding:20px">Cargando base de datos...</p>
-            </div>
+            <p style="margin-top:20px; color:#888;">Cargando formulario de registro...</p>
+            <button class="btn-role" style="background:var(--p); margin-top:20px" onclick="go('v-home')">Volver al Inicio</button>
         </div>
 
         <nav>
-            <button onclick="go('v-home')" id="btn-h" class="active"><i class="fas fa-home"></i></button>
-            <button onclick="go('v-serv')"><i class="fas fa-plus-square"></i></button>
+            <button onclick="go('v-home')" id="n-h" class="active"><i class="fas fa-th-large"></i></button>
+            <button onclick="go('v-serv')"><i class="fas fa-file-signature"></i></button>
             <button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
         </nav>
     </div>
 
     <script>
         function login(role) {
-            const user = document.getElementById('uname').value.trim() || 'Colaborador';
+            const user = document.getElementById('uname').value.trim() || 'Experto';
             const profiles = {
-                admin: { n: user, r: 'admin', c: '#27ae60', t: 'Dueño' },
-                prog: { n: user, r: 'admin', c: '#2980b9', t: 'Dev' },
-                tech: { n: user, r: 'tech', c: '#f39c12', t: 'Técnico' }
+                admin: { n: user, r: 'admin', c: '#27ae60', t: 'DUEÑO' },
+                prog: { n: user, r: 'admin', c: '#2980b9', t: 'PROG' },
+                tech: { n: user, r: 'tech', c: '#f39c12', t: 'TÉCNICO' }
             };
-            localStorage.setItem('expert_session', JSON.stringify(profiles[role]));
+            localStorage.setItem('mip_session_v2', JSON.stringify(profiles[role]));
             render();
         }
 
         function render() {
-            const s = localStorage.getItem('expert_session');
+            const s = localStorage.getItem('mip_session_v2');
             if(!s) return;
             const u = JSON.parse(s);
             document.getElementById('ls').style.display = 'none';
             document.getElementById('app').style.display = 'block';
-            document.getElementById('badge').innerText = u.n + ' (' + u.t + ')';
-            document.getElementById('badge').style.background = u.c;
+            document.getElementById('role-tag').innerText = u.n + ' | ' + u.t;
+            document.getElementById('role-tag').style.background = u.c;
 
-            const grid = document.getElementById('menu-grid');
+            const grid = document.getElementById('main-menu');
             grid.innerHTML = '';
             const modules = [
-                { n: 'Nuevo Servicio', i: 'fa-plus-circle', v: 'v-serv', p: ['admin','tech'] },
-                { n: 'Clientes', i: 'fa-users', v: 'v-clients', p: ['admin'] },
-                { n: 'Agenda (6m)', i: 'fa-calendar-alt', v: 'v-home', p: ['admin','tech'] },
-                { n: 'Certificados', i: 'fa-file-pdf', v: 'v-home', p: ['admin'] },
-                { n: 'Inventario', i: 'fa-boxes', v: 'v-home', p: ['admin','tech'] },
-                { n: 'Ajustes', i: 'fa-cogs', v: 'v-home', p: ['admin'] }
+                { n: 'Servicio', i: 'fa-file-signature', v: 'v-serv', p: ['admin','tech'] },
+                { n: 'Clientes', i: 'fa-users', v: 'v-home', p: ['admin'] },
+                { n: 'Agenda', i: 'fa-calendar-alt', v: 'v-home', p: ['admin','tech'] },
+                { n: 'Insumos', i: 'fa-boxes', v: 'v-home', p: ['admin','tech'] },
+                { n: 'Reportes', i: 'fa-chart-bar', v: 'v-home', p: ['admin'] },
+                { n: 'Ajustes', i: 'fa-cog', v: 'v-home', p: ['admin'] }
             ];
 
             modules.forEach(m => {
-                const hasAcc = m.p.includes(u.r);
+                const acc = m.p.includes(u.r);
                 const div = document.createElement('div');
-                div.className = 'item' + (hasAcc ? '' : ' disabled');
-                div.innerHTML = `<i class="fas ${m.i}" style="color:${hasAcc?u.c:'#ccc'}"></i><span style="font-size:0.85rem;font-weight:bold">${m.n}</span>`;
-                if(hasAcc) div.onclick = () => go(m.v);
+                div.className = 'item' + (acc ? '' : ' disabled');
+                div.innerHTML = `<i class="fas ${m.i}" style="color:${acc?u.c:'#ccc'}"></i><span style="font-size:0.9rem; font-weight:bold; color:#444;">${m.n}</span>`;
+                if(acc) div.onclick = () => go(m.v);
                 grid.appendChild(div);
             });
         }
@@ -156,13 +131,7 @@
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-            if(id === 'v-home') document.getElementById('btn-h').classList.add('active');
-        }
-
-        function save() {
-            if(!document.getElementById('cli-n').value) return alert('Ponga el nombre del cliente');
-            alert('✅ Registro exitoso. Programado para seguimiento en 6 meses.');
-            go('v-home');
+            if(id === 'v-home') document.getElementById('n-h').classList.add('active');
         }
 
         function logout() { localStorage.clear(); location.reload(); }

@@ -1010,7 +1010,7 @@ function _old_initData(){
   CL=DB.get('clientes')||[];
   SV=DB.get('servicios')||[];
 }
-initData();
+initData(); checkSession();
 
 
 function loadCertEmpresa(input){
@@ -1063,32 +1063,45 @@ function closeLB(){document.getElementById('lightbox').classList.remove('open');
 
 
 
+
 function doLogin(){
   const lu = document.getElementById('lu');
   const lp = document.getElementById('lp');
-  const u = lu.value.trim().toLowerCase();
-  const p = lp.value.trim();
+  const uInput = lu.value.trim();
+  const pInput = lp.value.trim();
   const err = document.getElementById('lerr');
 
-  // 1. Verificar contra el admin/programador maestro (por seguridad de acceso)
-  if(u === 'administracion1' && p === 'Jesus123'){
-     ME = U.find(x => x.id === 1) || {id:1, nombre:'Administracion 1', user:'Administracion1', pass:'Jesus123', rol:'admin'};
-     finishLogin();
-     return;
-  }
-
-  // 2. Verificar contra los usuarios creados en la base de datos (U)
-  const found = U.find(x => x.user.toLowerCase() === u && x.pass === p);
+  // Buscamos en la lista global de usuarios (U) cargada de DB
+  // Comparamos usuario sin importar mayúsculas, pero contraseña exacta
+  const found = U.find(x => x.user.toLowerCase() === uInput.toLowerCase() && x.pass === pInput);
   
   if(!found){ 
+    // Caso especial para el admin maestro si U está vacío por alguna razón
+    if(uInput.toLowerCase() === 'administracion1' && pInput === 'Jesus123'){
+       ME = U.find(x => x.id === 1) || {id:1, nombre:'Administracion 1', user:'Administracion1', pass:'Jesus123', rol:'admin'};
+       finishLogin();
+       return;
+    }
     err.classList.add('show'); 
     return; 
   }
 
   err.classList.remove('show');
   ME = found;
+  // Guardamos la sesión para que sea independiente por teléfono
+  localStorage.setItem('mip_session', JSON.stringify(ME));
   finishLogin();
 }
+
+// Función para auto-login si ya inició sesión antes
+function checkSession(){
+  const session = localStorage.getItem('mip_session');
+  if(session){
+    ME = JSON.parse(session);
+    finishLogin();
+  }
+}
+
 
 
 
@@ -1708,7 +1721,7 @@ function importar(input){
       if(d.usuarios?.length)DB.set('usuarios',d.usuarios);
       DB.set('clientes',d.clientes);
       DB.set('servicios',d.servicios||[]);
-      initData();renderAll();
+      initData(); checkSession();renderAll();
       toast('✅ Datos restaurados: '+d.fecha);
     }catch{toast('⚠️ Error al leer el archivo');}
   };
@@ -1719,7 +1732,7 @@ function borrarTodo(){
   if(!confirm('¿Borrar TODA la información?\nEsta acción no se puede deshacer.'))return;
   if(!confirm('⚠️ Última confirmación.'))return;
   ['usuarios','clientes','servicios'].forEach(k=>localStorage.removeItem('mip_'+k));
-  U=[];CL=[];SV=[];initData();renderAll();
+  U=[];CL=[];SV=[];initData(); checkSession();renderAll();
   toast('🗑 Datos borrados');
 }
 

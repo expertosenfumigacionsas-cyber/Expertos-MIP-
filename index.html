@@ -514,6 +514,18 @@ img{max-width:100%;}
 }
 .welcome h2{font-size:1.15rem;font-weight:800;color:var(--white);letter-spacing:-.2px;}
 .welcome p{font-size:.8rem;color:rgba(255,255,255,.75);margin-top:4px;}
+
+.cert-config {
+  background: var(--white); border-radius: var(--r16); padding: 20px; margin-bottom: 10px;
+  border: 1px solid var(--slate7); box-shadow: var(--sh1);
+}
+.cert-preview-box {
+  width: 100%; height: 120px; border: 2px dashed var(--slate6); border-radius: var(--r12);
+  margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: var(--slate9); position: relative;
+}
+.cert-preview-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
 </style>
 </head>
 <body>
@@ -682,6 +694,16 @@ img{max-width:100%;}
           <p>Copia de seguridad</p>
         </div>
       </div>
+      
+      <div class="cert-config">
+        <h3>📄 Certificado / Resolución Empresa</h3>
+        <p>Sube la imagen del certificado o resolución de la empresa para que aparezca en los reportes automáticos.</p>
+        <div class="cert-preview-box" id="cert-empresa-prev" onclick="document.getElementById('us-cert-empresa').click()">
+          <span style="color:var(--slate4); font-size:0.85rem;">Click para subir certificado</span>
+        </div>
+        <input type="file" id="us-cert-empresa" accept="image/*" onchange="loadCertEmpresa(this)" style="display:none;"/>
+      </div>
+
       <div class="backup-card">
         <h3>📤 Exportar copia de seguridad</h3>
         <p>Descarga todos tus datos en un archivo seguro.</p>
@@ -938,12 +960,6 @@ const DB={
 };
 
 // ═══════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════
-let U=[],CL=[],SV=[],ME=null;
-let editSV=null,editCL=null,editUS=null,detID=null;
-let drawing=false,fCtx=null,lX=0,lY=0,hasFirma=false;
-let fotoA=null,fotoD=null,fotoP=null;
 
 function initData(){
   U=DB.get('usuarios')||[];
@@ -953,8 +969,50 @@ function initData(){
   }
   CL=DB.get('clientes')||[];
   SV=DB.get('servicios')||[];
+  renderCertEmpresa();
+}
+
+// STATE
+// ═══════════════════════════════════════════
+let U=[],CL=[],SV=[],ME=null;
+let editSV=null,editCL=null,editUS=null,detID=null;
+let drawing=false,fCtx=null,lX=0,lY=0,hasFirma=false;
+let fotoA=null,fotoD=null,fotoP=null;
+
+function _old_initData(){
+  U=DB.get('usuarios')||[];
+  if(!U.find(u=>u.id===1)){
+    U.unshift({id:1,nombre:'Administracion 1',user:'administracion1',pass:'Jesús123',rol:'admin',tel:'3132922361',ss:null});
+    DB.set('usuarios',U);
+  }
+  CL=DB.get('clientes')||[];
+  SV=DB.get('servicios')||[];
 }
 initData();
+
+
+function loadCertEmpresa(input){
+  const file=input.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const data=e.target.result;
+    localStorage.setItem('mip_cert_empresa', data);
+    renderCertEmpresa();
+    toast('✅ Certificado de empresa actualizado');
+  };
+  r.readAsDataURL(file);
+}
+
+function renderCertEmpresa(){
+  const data = localStorage.getItem('mip_cert_empresa');
+  const box = document.getElementById('cert-empresa-prev');
+  if(!box) return;
+  if(data){
+    box.innerHTML = `<img src="${data}" alt="Certificado Empresa"/>`;
+  } else {
+    box.innerHTML = `<span style="color:var(--slate4); font-size:0.85rem;">Click para subir certificado</span>`;
+  }
+}
 
 // ═══════════════════════════════════════════
 // TOAST

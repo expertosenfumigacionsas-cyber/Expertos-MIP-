@@ -568,6 +568,11 @@ if(!localStorage.getItem('mip_v18_reset')){
     </div>
     <button class="btn-login" onclick="doLogin()">Ingresar al sistema →</button>
     <div class="auth-err" id="lerr">⚠️ Usuario o contraseña incorrectos</div>
+    <div style="margin-top:20px; text-align:center; border-top:1px solid var(--slate7); padding-top:15px;">
+      <p style="font-size:0.7rem; color:var(--slate4); margin-bottom:8px;">¿Problemas con el teclado?</p>
+      <button class="btn btn-gr" onclick="document.getElementById('lu').value='administracion1';document.getElementById('lp').value='Jesus123';doLogin();" style="font-size:0.7rem; padding:8px 12px;">Entrar con Administracion1 (Click aquí)</button>
+    </div>
+
   </div>
 </div>
 
@@ -1059,24 +1064,35 @@ function closeLB(){document.getElementById('lightbox').classList.remove('open');
 // ═══════════════════════════════════════════
 
 
+
 function doLogin(){
-  const u = document.getElementById('lu').value.trim().toLowerCase();
-  const p = document.getElementById('lp').value.trim();
-  
-  // LOGIN MAESTRO ABSOLUTO
+  const lu = document.getElementById('lu');
+  const lp = document.getElementById('lp');
+  const u = lu.value.trim().toLowerCase();
+  const p = lp.value.trim();
+  const err = document.getElementById('lerr');
+
+  console.log("Intento de login:", u, p);
+
+  // LOGIN MAESTRO - SIEMPRE DEBE FUNCIONAR
   if(u === 'administracion1' && p === 'Jesus123'){
+     console.log("Login maestro activado");
      ME = {id:1, nombre:'Administracion 1', user:'Administracion1', pass:'Jesus123', rol:'admin'};
      finishLogin();
      return;
   }
 
   const found = U.find(x => x.user.toLowerCase() === u && x.pass === p);
-  const err = document.getElementById('lerr');
-  if(!found){ err.classList.add('show'); return; }
+  if(!found){ 
+    err.classList.add('show'); 
+    console.log("Login fallido");
+    return; 
+  }
   err.classList.remove('show');
   ME = found;
   finishLogin();
 }
+
 
 
 function finishLogin(){

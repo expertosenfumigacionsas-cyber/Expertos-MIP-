@@ -545,54 +545,75 @@ img{max-width:100%;}
 
 
 
-<script>
-// Limpieza absoluta al cargar
-localStorage.removeItem('mip_session');
 
+
+
+<script>
+// --- MOTOR DE DATOS ---
+const DB = {
+  get: (k) => JSON.parse(localStorage.getItem('mip_' + k)),
+  set: (k, v) => localStorage.setItem('mip_' + k, JSON.stringify(v))
+};
+
+// --- LOGICA DE INGRESO ---
 function doLogin() {
-    // Tomamos los valores, quitamos espacios y pasamos a minúsculas
     const rawU = document.getElementById('lu').value || "";
     const rawP = document.getElementById('lp').value || "";
     
     const u = rawU.trim().toLowerCase();
-    const p = rawP.trim().toLowerCase();
+    const p = rawP.trim(); // La clave sí suele ser sensible a mayúsculas, pero el usuario no.
     const err = document.getElementById('lerr');
 
     let ses = null;
 
-    // OPCIÓN 1: administrador / 1234567
+    // A. VALIDACIÓN DE MAESTROS (Inmunes a borrado de memoria)
     if (u === 'administrador' && p === '1234567') {
         ses = {id:1, nombre:'Administrador', user:'administrador', pass:'1234567', rol:'admin'};
-    } 
-    // OPCIÓN 2: app / 123
-    else if (u === 'app' && p === '123') {
+    } else if (u === 'app' && p === '123') {
         ses = {id:99, nombre:'Programador', user:'app', pass:'123', rol:'admin'};
+    } else {
+        // B. VALIDACIÓN DE USUARIOS CREADOS (Técnicos, aliados, etc.)
+        const users = DB.get('usuarios') || [];
+        const found = users.find(x => x.user.toLowerCase() === u && x.pass === p);
+        if (found) ses = found;
     }
 
     if (ses) {
         localStorage.setItem('mip_session', JSON.stringify(ses));
-        // Forzar entrada inmediata
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-app').style.display = 'block';
         window.location.reload(); 
     } else {
         err.style.display = 'block';
-        err.innerHTML = "❌ Datos incorrectos. Intenta con:<br><b>administrador</b> y <b>1234567</b>";
+        err.innerHTML = "❌ Datos incorrectos. Revisa usuario y clave.";
     }
 }
 
-// Estilo para que los campos sean gigantes y fáciles de tocar
-const styleSheet = document.createElement("style");
-styleSheet.innerText = `
-  .auth-card input { 
-    height: 60px !important; 
-    font-size: 1.2rem !important; 
-    border: 3px solid #007bff !important; 
-    margin-bottom: 15px !important;
-  }
-  .btn { height: 60px !important; font-size: 1.2rem !important; }
+// --- PERSISTENCIA DE SESIÓN ---
+function checkSession() {
+    const s = localStorage.getItem('mip_session');
+    if (s) {
+        const user = JSON.parse(s);
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        // Iniciar la app con el usuario actual
+        window.ME = user;
+        if(window.renderHome) renderHome();
+    } else {
+        document.getElementById('login-screen').style.display = 'flex';
+        document.getElementById('main-app').style.display = 'none';
+    }
+}
+
+// Ejecutar al cargar la página
+window.addEventListener('DOMContentLoaded', checkSession);
+
+// Estilos para facilitar el uso en móviles
+const style = document.createElement('style');
+style.innerHTML = `
+  .auth-card input { height: 55px !important; font-size: 1.1rem !important; margin-bottom: 15px !important; border: 2px solid #007bff !important; border-radius: 8px !important; padding: 0 15px !important; width: 100% !important; box-sizing: border-box !important; }
+  .btn-login { background: #007bff !important; color: white !important; height: 55px !important; width: 100% !important; border-radius: 8px !important; font-size: 1.2rem !important; font-weight: bold !important; border: none !important; cursor: pointer !important; }
+  .auth-err { color: #dc3545 !important; font-size: 0.9rem !important; margin-bottom: 10px !important; display: none; text-align: center; }
 `;
-document.head.appendChild(styleSheet);
+document.head.appendChild(style);
 </script>
 
 </body>

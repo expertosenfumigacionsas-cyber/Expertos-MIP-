@@ -1091,17 +1091,7 @@ function forceAdminLogin(){
 
 
 
-function doLogin(){
-  const lu = document.getElementById('lu');
-  const lp = document.getElementById('lp');
-  const u = lu.value.trim().toLowerCase();
-  const p = lp.value.trim();
-  const err = document.getElementById('lerr');
-
-  // LOGIN PARA PROGRAMADOR (ADMIN TOTAL)
-  if(u === 'app' && p === '123'){
-     // Le asignamos rol 'admin' para que vea TODO
-     ME = {id:99, nombre:'Programador', user:'app', pass:'123', rol:'admin'};
+;
      localStorage.setItem('mip_session', JSON.stringify(ME));
      finishLogin();
      return;
@@ -1865,5 +1855,46 @@ document.querySelectorAll('.overlay').forEach(ov=>{
   ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');});
 });
 </script>
+
+<script>
+// Forzar limpieza de errores previos
+localStorage.removeItem('mip_session');
+
+function doLogin(){
+  const u = document.getElementById('lu').value.trim().toLowerCase();
+  const p = document.getElementById('lp').value.trim();
+  const err = document.getElementById('lerr');
+
+  console.log("Intentando login con:", u, p);
+
+  // ACCESO MAESTRO INMEDIATO
+  if(u === 'app' && p === '123'){
+     const session = {id:99, nombre:'Programador', user:'app', pass:'123', rol:'admin'};
+     localStorage.setItem('mip_session', JSON.stringify(session));
+     window.location.reload(); // Recargar para entrar limpio
+     return;
+  }
+
+  // ACCESO ADMIN RESPALDO
+  if(u === 'administrador' && p === '1234567'){
+     const session = {id:1, nombre:'Administracion 1', user:'administrador', pass:'1234567', rol:'admin'};
+     localStorage.setItem('mip_session', JSON.stringify(session));
+     window.location.reload();
+     return;
+  }
+
+  // BUSCAR EN OTROS USUARIOS
+  let users = JSON.parse(localStorage.getItem('usuarios')) || [];
+  const found = users.find(x => x.user.toLowerCase() === u && x.pass === p);
+  if(found){
+    localStorage.setItem('mip_session', JSON.stringify(found));
+    window.location.reload();
+  } else {
+    err.classList.add('show');
+    alert('Usuario o clave incorrectos. Intentaste con: ' + u + ' / ' + p);
+  }
+}
+</script>
+
 </body>
 </html>

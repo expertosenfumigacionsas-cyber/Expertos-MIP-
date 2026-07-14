@@ -1,53 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Expertos MIP</title>
-    <style>
-        body { margin:0; font-family: sans-serif; background: #1a1a1a; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        .card { background: white; padding: 40px 20px; border-radius: 30px; width: 90%; max-width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        h2 { color: #2c3e50; margin-bottom: 30px; }
-        .btn { width: 100%; height: 80px; border: none; border-radius: 20px; font-size: 1.4rem; font-weight: bold; margin-bottom: 20px; cursor: pointer; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .owner { background: #27ae60; }
-        .prog { background: #2980b9; }
-        p { color: #7f8c8d; font-size: 0.9rem; margin-top: 20px; }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Expertos MIP</title>
+<style>
+:root { --g1:#0f4c25; --g2:#166534; --g4:#16a34a; --white:#ffffff; --slate8:#f1f5f9; }
+body { font-family: sans-serif; background: var(--slate8); margin: 0; padding: 0; }
+#login-screen {
+  display: flex; align-items: center; justify-content: center; min-height: 100vh;
+  background: linear-gradient(135deg, var(--g1), var(--g2)); padding: 20px;
+}
+.card {
+  background: white; padding: 40px 30px; border-radius: 30px; width: 100%; max-width: 360px;
+  text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.btn {
+  width: 100%; height: 80px; border: none; border-radius: 20px; font-size: 1.4rem;
+  font-weight: bold; margin-bottom: 20px; cursor: pointer; color: white;
+}
+.owner { background: #27ae60; }
+.prog { background: #2980b9; }
+h2 { color: #333; margin-bottom: 30px; }
+#main-app { display: none; padding: 20px; text-align: center; }
+</style>
 </head>
 <body>
-    <div class="card">
-        <img src="https://expertosenfumigacionsas-cyber.github.io/Expertos-MIP-/logo.png" style="width:80px; margin-bottom:10px;" onerror="this.style.display='none'">
-        <h2>Expertos MIP</h2>
-        <button class="btn owner" onclick="login('admin')">🟢 SOY EL DUEÑO</button>
-        <button class="btn prog" onclick="login('prog')">🔵 PROGRAMADOR</button>
-        <p>Toca un botón para entrar sin clave</p>
-    </div>
 
-    <script>
-    // ESTA FUNCIÓN SE EJECUTA INMEDIATAMENTE
-    function login(type) {
-        const user = (type === 'admin') 
-            ? {id: 1, nombre: 'Administrador', user: 'administrador', pass: '1234567', rol: 'admin'}
-            : {id: 99, nombre: 'Programador', user: 'app', pass: '123', rol: 'admin'};
-        
-        // Guardamos la sesión
-        localStorage.setItem('mip_session', JSON.stringify(user));
-        
-        // Creamos una estructura básica de la app en caso de que index.html sea reemplazado
-        // Pero lo ideal es que index.html sea el contenedor principal.
-        alert('Ingresando como ' + user.nombre);
-        
-        // Forzamos la recarga para que el sistema reconozca la sesión
-        location.reload();
+<div id="login-screen">
+  <div class="card">
+    <h2>Expertos MIP</h2>
+    <button class="btn owner" onclick="acc('admin')">🟢 SOY EL DUEÑO</button>
+    <button class="btn prog" onclick="acc('prog')">🔵 PROGRAMADOR</button>
+  </div>
+</div>
+
+<div id="main-app">
+  <h1>Bienvenido al Panel</h1>
+  <p>Cargando herramientas...</p>
+  <button onclick="localStorage.clear(); location.reload();">Cerrar Sesión</button>
+</div>
+
+<script>
+function acc(t) {
+    const user = (t === 'admin') 
+        ? {id: 1, nombre: 'Administrador', rol: 'admin'}
+        : {id: 99, nombre: 'Programador', rol: 'admin'};
+    localStorage.setItem('mip_session', JSON.stringify(user));
+    location.reload();
+}
+
+window.onload = function() {
+    if (localStorage.getItem('mip_session')) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        // Aquí es donde deberíamos inyectar el resto del código funcional en la siguiente vuelta
     }
+}
+</script>
 
-    // Si ya existe sesión, mostramos un mensaje (aquí deberías cargar el resto de tu app)
-    window.onload = function() {
-        if(localStorage.getItem('mip_session')) {
-            document.body.innerHTML = '<div style="color:white; text-align:center; padding:50px;"><h1>Cargando Panel de Control...</h1><p>Si la pantalla se queda así, por favor contacta al programador.</p><button onclick="localStorage.clear(); location.reload();" style="padding:10px;">Cerrar Sesión / Reset</button></div>';
-            // Aquí es donde tu lógica original de renderHome() debería dispararse.
-        }
-    };
-    </script>
 </body>
 </html>

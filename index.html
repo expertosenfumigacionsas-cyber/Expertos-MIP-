@@ -1,54 +1,161 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<title>Expertos MIP</title>
-<style>
-:root{--g1:#0f4c25;--g2:#166534;--slate8:#f1f5f9;}
-body{font-family:sans-serif;background:var(--slate8);margin:0;padding:0;}
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--g1),var(--g2));padding:20px;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;}
-.card{background:white;padding:40px 30px;border-radius:30px;width:100%;max-width:360px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.3);}
-.btn{width:100%;height:80px;border:none;border-radius:20px;font-size:1.4rem;font-weight:bold;margin-bottom:20px;cursor:pointer;color:white;}
-.owner{background:#27ae60;}.prog{background:#2980b9;}
-#main-app{display:none;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Expertos MIP - Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #27ae60; --secondary: #2980b9; --dark: #1a1a1a;
+            --light: #f4f7f6; --text: #2c3e50; --danger: #e74c3c;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--light); color: var(--text); }
+        
+        /* LOGIN */
+        #login-screen { display: flex; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(135deg, var(--dark), #333); }
+        .login-card { background: white; padding: 40px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; }
+        .btn-big { width: 100%; height: 70px; border: none; border-radius: 15px; font-size: 1.2rem; font-weight: bold; color: white; cursor: pointer; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        /* APP LAYOUT */
+        #main-app { display: none; padding-bottom: 80px; }
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        
+        /* DASHBOARD CARDS */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        
+        /* NAVIGATION */
+        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #ddd; z-index: 1000; }
+        nav button { border: none; background: none; color: #999; font-size: 1.5rem; cursor: pointer; }
+        nav button.active { color: var(--primary); }
+        
+        /* FORMS & LISTS */
+        .view { display: none; padding: 20px; animation: fadeIn 0.3s; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; }
+        .btn-save { background: var(--primary); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; }
+        .item-list { background: white; margin-bottom: 10px; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; }
+    </style>
 </head>
 <body>
 
-<div id="login-screen">
-  <div class="card">
-    <h2 style="color:#333;margin-bottom:30px;">Expertos MIP</h2>
-    <button class="btn owner" onclick="forceAccess('admin')">🟢 SOY EL DUEÑO</button>
-    <button class="btn prog" onclick="forceAccess('prog')">🔵 PROGRAMADOR</button>
-  </div>
-</div>
+    <!-- PANTALLA DE ACCESO -->
+    <div id="login-screen">
+        <div class="login-card">
+            <h2 style="margin-bottom:30px;">Expertos MIP</h2>
+            <button class="btn-big" style="background:var(--primary)" onclick="startApp('admin')">
+                <i class="fas fa-user-tie"></i> SOY EL DUEÑO
+            </button>
+            <button class="btn-big" style="background:var(--secondary)" onclick="startApp('prog')">
+                <i class="fas fa-code"></i> PROGRAMADOR
+            </button>
+        </div>
+    </div>
 
-<div id="main-app">
-  <!-- Aquí el sistema cargará su contenido habitual -->
-  <div style="padding:20px;text-align:center;">
-    <p>Cargando herramientas de fumigación...</p>
-  </div>
-</div>
+    <!-- APLICACIÓN PRINCIPAL -->
+    <div id="main-app">
+        <header>
+            <h2 id="view-title">Dashboard</h2>
+        </header>
 
-<script>
-function forceAccess(type) {
-    const user = (type === 'admin') 
-        ? {id: 1, nombre: 'Administrador', user: 'administrador', rol: 'admin'}
-        : {id: 99, nombre: 'Programador', user: 'app', rol: 'admin'};
-    localStorage.setItem('mip_session', JSON.stringify(user));
-    location.reload();
-}
+        <!-- VISTA: DASHBOARD -->
+        <div id="v-home" class="view active">
+            <div class="grid">
+                <div class="card" onclick="showView('v-servicios', 'Servicios')"><i class="fas fa-file-contract"></i><p>Servicios</p></div>
+                <div class="card" onclick="showView('v-clientes', 'Clientes')"><i class="fas fa-users"></i><p>Clientes</p></div>
+                <div class="card" onclick="showView('v-agenda', 'Agenda')"><i class="fas fa-calendar-alt"></i><p>Agenda</p></div>
+                <div class="card" onclick="showView('v-inventario', 'Inventario')"><i class="fas fa-flask"></i><p>Insumos</p></div>
+            </div>
+            <div style="padding:20px;">
+                <h3>Próximos Servicios</h3>
+                <div id="next-services-list">
+                    <p style="color:#999;">No hay servicios programados para hoy.</p>
+                </div>
+            </div>
+        </div>
 
-window.onload = function() {
-    const session = localStorage.getItem('mip_session');
-    if (session) {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-app').style.display = 'block';
-        // Simular la carga del panel
-        alert('Bienvenido: ' + JSON.parse(session).nombre);
-    }
-}
-</script>
+        <!-- VISTA: CLIENTES -->
+        <div id="v-clientes" class="view">
+            <button class="btn-save" onclick="openModal('m-cliente')">+ Nuevo Cliente</button>
+            <div id="clientes-list" style="margin-top:20px;"></div>
+        </div>
+
+        <!-- VISTA: SERVICIOS / REPORTES -->
+        <div id="v-servicios" class="view">
+            <button class="btn-save" onclick="openModal('m-servicio')">+ Registrar Servicio</button>
+            <div id="servicios-list" style="margin-top:20px;"></div>
+        </div>
+
+        <!-- NAVEGACIÓN -->
+        <nav>
+            <button onclick="showView('v-home', 'Dashboard')" id="btn-home" class="active"><i class="fas fa-home"></i></button>
+            <button onclick="showView('v-servicios', 'Servicios')" id="btn-serv"><i class="fas fa-clipboard-list"></i></button>
+            <button onclick="showView('v-clientes', 'Clientes')" id="btn-user"><i class="fas fa-users"></i></button>
+            <button onclick="localStorage.clear(); location.reload();"><i class="fas fa-sign-out-alt"></i></button>
+        </nav>
+    </div>
+
+    <script>
+        // MOTOR DE DATOS
+        let DB = {
+            clientes: JSON.parse(localStorage.getItem('mip_clientes')) || [],
+            servicios: JSON.parse(localStorage.getItem('mip_servicios')) || [],
+            insumos: JSON.parse(localStorage.getItem('mip_insumos')) || []
+        };
+
+        function saveDB() {
+            localStorage.setItem('mip_clientes', JSON.stringify(DB.clientes));
+            localStorage.setItem('mip_servicios', JSON.stringify(DB.servicios));
+            localStorage.setItem('mip_insumos', JSON.stringify(DB.insumos));
+        }
+
+        // CONTROL DE VISTAS
+        function showView(id, title) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.getElementById('view-title').innerText = title;
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            if(id === 'v-home') document.getElementById('btn-home').classList.add('active');
+            
+            if(id === 'v-clientes') renderClientes();
+            if(id === 'v-servicios') renderServicios();
+        }
+
+        function startApp(role) {
+            localStorage.setItem('mip_session', role);
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            renderClientes();
+        }
+
+        // GESTIÓN DE CLIENTES
+        function renderClientes() {
+            const list = document.getElementById('clientes-list');
+            list.innerHTML = DB.clientes.length ? '' : '<p>No hay clientes registrados.</p>';
+            DB.clientes.forEach(c => {
+                list.innerHTML += `<div class="item-list">
+                    <div><b>${c.nombre}</b><br><small>${c.telefono}</small></div>
+                    <i class="fas fa-chevron-right"></i>
+                </div>`;
+            });
+        }
+
+        // REVISIÓN INICIAL
+        window.onload = () => {
+            if(localStorage.getItem('mip_session')) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+            }
+        };
+
+        // Placeholder para funciones futuras (PDF, Cámara, GPS)
+        function openModal(type) {
+            alert("Esta función se activará en la siguiente actualización del módulo Pro.");
+        }
+    </script>
 </body>
 </html>

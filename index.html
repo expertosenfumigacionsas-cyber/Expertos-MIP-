@@ -1092,22 +1092,39 @@ function forceAdminLogin(){
   finishLogin();
 }
 
+
 function doLogin(){
   const lu = document.getElementById('lu');
   const lp = document.getElementById('lp');
-  const uInput = lu.value.trim();
+  const uInput = lu.value.trim().toLowerCase();
   const pInput = lp.value.trim();
   const err = document.getElementById('lerr');
 
-  console.log("Intentando entrar con:", uInput, pInput);
+  // Forzar recarga de usuarios desde la DB para asegurar que los nuevos están ahí
+  U = DB.get('usuarios') || [];
 
-  // 1. EL "ADMIN MAESTRO" SIEMPRE TIENE PRIORIDAD ABSOLUTA
-  if(uInput.toLowerCase() === 'administracion1' && pInput === 'Jesus123'){
-     ME = {id:1, nombre:'Administracion 1', user:'Administracion1', pass:'Jesus123', rol:'admin'};
+  // Buscar coincidencia en la lista de todos los usuarios creados
+  const found = U.find(x => x.user.toLowerCase() === uInput && x.pass === pInput);
+  
+  if(found){
+    ME = found;
+    localStorage.setItem('mip_session', JSON.stringify(ME));
+    finishLogin();
+    return;
+  }
+
+  // Respaldo para el administrador principal
+  if(uInput === 'administrador' && pInput === '1234567'){
+     const adminMaster = U.find(x => x.id === 1) || {id:1, nombre:'Administracion 1', user:'administrador', pass:'1234567', rol:'admin'};
+     ME = adminMaster;
      localStorage.setItem('mip_session', JSON.stringify(ME));
      finishLogin();
      return;
   }
+
+  err.classList.add('show');
+}
+
 
   // 2. BUSCAR EN LA LISTA DE USUARIOS (U)
   // Asegurarnos de que U esté cargado

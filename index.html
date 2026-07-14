@@ -1,103 +1,210 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Expertos MIP</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><style>:root{--p:#27ae60;--s:#2980b9;--t:#f39c12;--d:#1a1a1a;--l:#f4f7f6}*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}body{background:var(--l);color:#333;overflow-x:hidden}#ls{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--d);display:flex;align-items:center;justify-content:center;z-index:9999}#app{display:none}.card{background:white;padding:30px;border-radius:25px;width:90%;max-width:380px;text-align:center}.btn{width:100%;height:65px;border:none;border-radius:15px;font-size:1.1rem;font-weight:bold;color:white;margin-bottom:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}header{background:var(--p);color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.view{display:none;padding:20px;padding-bottom:100px}.view.active{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.item{background:white;padding:20px;border-radius:20px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.05);cursor:pointer}.item i{font-size:2.2rem;margin-bottom:10px;display:block}.disabled{opacity:0.4;filter:grayscale(1);pointer-events:none}nav{position:fixed;bottom:0;width:100%;background:white;display:flex;justify-content:space-around;padding:15px;border-top:1px solid #eee;z-index:100}nav button{border:none;background:none;color:#999;font-size:1.5rem}/* FORMS */.form-card{background:white;padding:20px;border-radius:20px;box-shadow:0 4px 10px rgba(0,0,0,0.05)}input,select,textarea{width:100%;padding:12px;margin-bottom:15px;border:1px solid #ddd;border-radius:10px;font-size:1rem}label{display:block;margin-bottom:5px;font-weight:bold;font-size:0.9rem;color:#555}.btn-save{background:var(--p);color:white;border:none;padding:15px;width:100%;border-radius:10px;font-weight:bold;font-size:1.1rem;cursor:pointer}</style></head><body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Expertos MIP - Sistema Integral</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --p: #27ae60; --s: #2980b9; --t: #f39c12; --d: #1a1a1a; --l: #f4f7f6; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--l); color: #333; overflow-x: hidden; }
+        
+        /* LOGIN */
+        #ls { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--d); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .card { background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center; }
+        .btn-l { width: 100%; height: 65px; border: none; border-radius: 15px; font-size: 1.1rem; font-weight: bold; color: white; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        /* LAYOUT */
+        #app { display: none; padding-bottom: 80px; }
+        header { background: var(--p); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .view { display: none; padding: 20px; animation: fadeIn 0.3s; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-<div id="ls"><div class="card"><div style="font-size:4rem;color:var(--p);margin-bottom:10px"><i class="fas fa-shield-virus"></i></div><h2>EXPERTOS MIP</h2><p style="margin-bottom:20px;color:#777">Identificación de Usuario</p><input type="text" id="username" placeholder="Su nombre"><button class="btn" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-tie"></i> DUEÑO</button><button class="btn" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-code"></i> PROG</button><button class="btn" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-briefcase"></i> TÉCNICO</button></div></div>
+        /* GRID */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+        .item { background: white; padding: 20px; border-radius: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
+        .item i { font-size: 2.2rem; margin-bottom: 10px; display: block; }
+        .disabled { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
 
-<div id="app">
-    <header><div><i class="fas fa-shield-virus"></i> <span style="font-weight:bold">EXPERTOS MIP</span></div><span id="role-badge" style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:15px;font-size:0.8rem">Rol</span></header>
-    
-    <div id="v-home" class="view active">
-        <h3 style="margin-bottom:15px">Dashboard</h3>
-        <div class="grid" id="grid-home"></div>
-    </div>
+        /* FORMS */
+        .f-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
+        label { font-weight: bold; font-size: 0.9rem; color: #555; }
+        .btn-act { background: var(--p); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-    <div id="v-new-service" class="view">
-        <h3 style="margin-bottom:15px"><i class="fas fa-plus-circle"></i> Registrar Nuevo Servicio</h3>
-        <div class="form-card">
-            <label>Cliente / Empresa</label>
-            <input type="text" id="s-client" placeholder="Nombre del cliente">
-            
-            <label>Tipo de Fumigación</label>
-            <select id="s-type">
-                <option>Control de Insectos Rastreros</option>
-                <option>Control de Voladores</option>
-                <option>Desratización (Roedores)</option>
-                <option>Desinfección de Áreas</option>
-                <option>Lavado de Tanques</option>
-            </select>
-            
-            <label>Ubicación / Dirección</label>
-            <input type="text" id="s-loc" placeholder="Bogotá, Calle...">
-            
-            <label>Observaciones</label>
-            <textarea id="s-obs" rows="3" placeholder="Detalles del servicio..."></textarea>
-            
-            <button class="btn-save" onclick="saveService()"><i class="fas fa-save"></i> GUARDAR SERVICIO</button>
-            <button onclick="goView('v-home')" style="width:100%;background:none;border:none;margin-top:10px;color:#999">Cancelar</button>
+        /* NAV */
+        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #eee; z-index: 1000; }
+        nav button { border: none; background: none; color: #999; font-size: 1.5rem; cursor: pointer; }
+        nav button.active { color: var(--p); }
+
+        /* LISTS */
+        .list-item { background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    </style>
+</head>
+<body>
+
+    <div id="ls">
+        <div class="card">
+            <div style="font-size:4rem;color:var(--p);margin-bottom:10px"><i class="fas fa-shield-virus"></i></div>
+            <h2 style="margin-bottom:5px">EXPERTOS MIP</h2>
+            <p style="margin-bottom:20px;color:#777">Bienvenido al Sistema Integral</p>
+            <input type="text" id="uname" placeholder="Su nombre">
+            <button class="btn-l" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-tie"></i> DUEÑO</button>
+            <button class="btn-l" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-code"></i> PROGRAMADOR</button>
+            <button class="btn-l" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-briefcase"></i> TÉCNICO</button>
         </div>
     </div>
 
-    <nav>
-        <button onclick="goView('v-home')"><i class="fas fa-home"></i></button>
-        <button onclick="goView('v-new-service')"><i class="fas fa-plus-square"></i></button>
-        <button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
-    </nav>
-</div>
+    <div id="app">
+        <header>
+            <div><i class="fas fa-shield-virus"></i> <span style="font-weight:bold">EXPERTOS MIP</span></div>
+            <span id="role-b" style="background:rgba(255,255,255,0.2);padding:4px 12px;border-radius:15px;font-size:0.8rem">Rol</span>
+        </header>
 
-<script>
-let SERVICES = JSON.parse(localStorage.getItem('mip_services')) || [];
+        <!-- DASHBOARD -->
+        <div id="v-home" class="view active">
+            <h3 style="margin-bottom:15px">Dashboard</h3>
+            <div class="grid" id="main-grid"></div>
+        </div>
 
-function login(r){
-    const name = document.getElementById('username').value.trim() || 'Usuario';
-    const u={admin:{n:name,r:'admin',c:'#27ae60'},prog:{n:name,r:'admin',c:'#2980b9'},tech:{n:name,r:'tecnico',c:'#f39c12'}};
-    localStorage.setItem('mip_session',JSON.stringify(u[r]));
-    renderApp();
-}
-function goView(id){
-    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-}
-function renderApp(){
-    const s=localStorage.getItem('mip_session');
-    if(!s)return;
-    const u=JSON.parse(s);
-    document.getElementById('ls').style.display='none';
-    document.getElementById('app').style.display='block';
-    document.getElementById('role-badge').innerText=u.n;
-    document.getElementById('role-badge').style.background=u.c;
-    const g=document.getElementById('grid-home');
-    g.innerHTML='';
-    const m=[
-        {n:'Nuevo Servicio',i:'fa-plus-circle',v:'v-new-service',r:['admin','tecnico']},
-        {n:'Historial',i:'fa-history',v:'v-home',r:['admin','tecnico']},
-        {n:'Clientes',i:'fa-users',v:'v-home',r:['admin']},
-        {n:'Inventario',i:'fa-boxes',v:'v-home',r:['admin','tecnico']}
-    ];
-    m.forEach(t=>{
-        const a=t.r.includes(u.r);
-        const div = document.createElement('div');
-        div.className = 'item' + (a ? '' : ' disabled');
-        div.innerHTML = `<i class="fas ${t.i}" style="color:${a?u.c:'#ccc'}"></i><span style="font-size:0.85rem;font-weight:bold">${t.n}</span>`;
-        if(a) div.onclick = () => goView(t.v);
-        g.appendChild(div);
-    });
-}
-function saveService(){
-    const client = document.getElementById('s-client').value;
-    if(!client){ alert('Ponga el nombre del cliente'); return; }
-    const newS = {
-        id: Date.now(),
-        client: client,
-        type: document.getElementById('s-type').value,
-        loc: document.getElementById('s-loc').value,
-        obs: document.getElementById('s-obs').value,
-        date: new Date().toLocaleString(),
-        tech: JSON.parse(localStorage.getItem('mip_session')).n
-    };
-    SERVICES.push(newS);
-    localStorage.setItem('mip_services', JSON.stringify(SERVICES));
-    alert('✅ Servicio registrado con éxito');
-    goView('v-home');
-}
-function logout(){localStorage.clear();location.reload();}
-window.onload=renderApp;
-</script></body></html>
+        <!-- REGISTRO SERVICIO -->
+        <div id="v-serv" class="view">
+            <h3><i class="fas fa-file-signature"></i> Nuevo Servicio</h3>
+            <div class="f-card">
+                <label>Cliente</label>
+                <input type="text" id="f-cli" placeholder="Nombre de la empresa">
+                <label>Dirección</label>
+                <input type="text" id="f-dir" placeholder="Dirección del servicio">
+                <label>Tipo de Manejo</label>
+                <select id="f-tipo">
+                    <option>C. Insectos Rastreros</option>
+                    <option>C. Insectos Voladores</option>
+                    <option>Control de Roedores</option>
+                    <option>Lavado de Tanques</option>
+                </select>
+                <label>Registro Fotográfico</label>
+                <input type="file" accept="image/*" capture="camera" style="padding:5px;">
+                <label>Observaciones Técnicas</label>
+                <textarea id="f-obs" rows="3"></textarea>
+                <button class="btn-act" onclick="saveS()"><i class="fas fa-save"></i> GUARDAR REPORTE</button>
+            </div>
+        </div>
+
+        <!-- CLIENTES -->
+        <div id="v-cli" class="view">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+                <h3><i class="fas fa-users"></i> Clientes</h3>
+                <button class="btn-act" style="width:auto;padding:8px 15px" onclick="alert('Nuevo cliente')">+</button>
+            </div>
+            <div id="list-cli"></div>
+        </div>
+
+        <!-- AGENDA -->
+        <div id="v-age" class="view">
+            <h3><i class="fas fa-calendar-alt"></i> Agenda de Re-servicios</h3>
+            <p style="color:#666;font-size:0.9rem">Próximos servicios programados (6 meses).</p>
+            <div id="list-age" style="margin-top:15px"></div>
+        </div>
+
+        <nav>
+            <button onclick="go('v-home')" id="n-h" class="active"><i class="fas fa-home"></i></button>
+            <button onclick="go('v-serv')"><i class="fas fa-plus-circle"></i></button>
+            <button onclick="go('v-cli')"><i class="fas fa-users"></i></button>
+            <button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+        </nav>
+    </div>
+
+    <script>
+        let DATA = {
+            serv: JSON.parse(localStorage.getItem('m_serv')) || [],
+            cli: JSON.parse(localStorage.getItem('m_cli')) || [
+                {n:'Empresa Test S.A.', t:'3132922361', d:'Calle 123 Bog'},
+                {n:'Conjunto Residencial', t:'3001234567', d:'Av 68 Bog'}
+            ]
+        };
+
+        function login(r) {
+            const name = document.getElementById('uname').value.trim() || 'Usuario';
+            const profiles = {
+                admin: {n: name, r:'admin', c:'#27ae60'},
+                prog: {n: name, r:'admin', c:'#2980b9'},
+                tech: {n: name, r:'tecnico', c:'#f39c12'}
+            };
+            localStorage.setItem('mip_session', JSON.stringify(profiles[r]));
+            init();
+        }
+
+        function init() {
+            const sess = localStorage.getItem('mip_session');
+            if(!sess) return;
+            const u = JSON.parse(sess);
+            document.getElementById('ls').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('role-b').innerText = u.n;
+            document.getElementById('role-b').style.background = u.c;
+            
+            renderGrid(u);
+            renderCli();
+        }
+
+        function renderGrid(u) {
+            const g = document.getElementById('main-grid');
+            const menu = [
+                {n:'Nuevo Servicio', i:'fa-plus-circle', v:'v-serv', r:['admin','tecnico']},
+                {n:'Clientes', i:'fa-users', v:'v-cli', r:['admin']},
+                {n:'Agenda 6 meses', i:'fa-calendar-check', v:'v-age', r:['admin','tecnico']},
+                {n:'Certificados', i:'fa-award', v:'v-home', r:['admin']},
+                {n:'Inventario', i:'fa-boxes', v:'v-home', r:['admin','tecnico']},
+                {n:'Configuración', i:'fa-cog', v:'v-home', r:['admin']}
+            ];
+            g.innerHTML = '';
+            menu.forEach(m => {
+                const acc = m.r.includes(u.r);
+                const div = document.createElement('div');
+                div.className = 'item' + (acc ? '' : ' disabled');
+                div.innerHTML = `<i class="fas ${m.i}" style="color:${acc?u.c:'#ccc'}"></i><span>${m.n}</span>`;
+                if(acc) div.onclick = () => go(m.v);
+                g.appendChild(div);
+            });
+        }
+
+        function renderCli() {
+            const l = document.getElementById('list-cli');
+            l.innerHTML = '';
+            DATA.cli.forEach(c => {
+                l.innerHTML += `<div class="list-item"><div><b>${c.n}</b><br><small>${c.d}</small></div><i class="fas fa-phone" style="color:var(--p)"></i></div>`;
+            });
+        }
+
+        function saveS() {
+            const c = document.getElementById('f-cli').value;
+            if(!c) return alert('Cliente requerido');
+            const s = {
+                id: Date.now(),
+                c: c,
+                d: document.getElementById('f-dir').value,
+                t: document.getElementById('f-tipo').value,
+                o: document.getElementById('f-obs').value,
+                f: new Date().toLocaleDateString(),
+                u: JSON.parse(localStorage.getItem('mip_session')).n
+            };
+            DATA.serv.push(s);
+            localStorage.setItem('m_serv', JSON.stringify(DATA.serv));
+            alert('✅ Registro guardado y programado para seguimiento en 6 meses.');
+            go('v-home');
+        }
+
+        function go(id) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            if(id==='v-home') document.getElementById('n-h').classList.add('active');
+        }
+
+        function logout() { localStorage.clear(); location.reload(); }
+        window.onload = init;
+    </script>
+</body>
+</html>

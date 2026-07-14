@@ -1062,6 +1062,7 @@ function closeLB(){document.getElementById('lightbox').classList.remove('open');
 
 
 
+
 function doLogin(){
   const lu = document.getElementById('lu');
   const lp = document.getElementById('lp');
@@ -1069,26 +1070,26 @@ function doLogin(){
   const p = lp.value.trim();
   const err = document.getElementById('lerr');
 
-  console.log("Intento de login:", u, p);
-
-  // LOGIN MAESTRO - SIEMPRE DEBE FUNCIONAR
+  // 1. Verificar contra el admin/programador maestro (por seguridad de acceso)
   if(u === 'administracion1' && p === 'Jesus123'){
-     console.log("Login maestro activado");
-     ME = {id:1, nombre:'Administracion 1', user:'Administracion1', pass:'Jesus123', rol:'admin'};
+     ME = U.find(x => x.id === 1) || {id:1, nombre:'Administracion 1', user:'Administracion1', pass:'Jesus123', rol:'admin'};
      finishLogin();
      return;
   }
 
+  // 2. Verificar contra los usuarios creados en la base de datos (U)
   const found = U.find(x => x.user.toLowerCase() === u && x.pass === p);
+  
   if(!found){ 
     err.classList.add('show'); 
-    console.log("Login fallido");
     return; 
   }
+
   err.classList.remove('show');
   ME = found;
   finishLogin();
 }
+
 
 
 

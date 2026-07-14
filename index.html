@@ -542,87 +542,57 @@ img{max-width:100%;}
 
 
 
+
+
+
 <script>
-// --- CORE DATA & STORAGE ---
-const DB = {
-  get: (k) => JSON.parse(localStorage.getItem('mip_' + k)),
-  set: (k, v) => localStorage.setItem('mip_' + k, JSON.stringify(v))
-};
+// Limpieza absoluta al cargar
+localStorage.removeItem('mip_session');
 
-let U = [], CL = [], SV = [], ME = null;
-
-// --- INITIALIZATION ---
-function initApp() {
-    console.log("Iniciando App v36...");
-    U = DB.get('usuarios') || [];
-    CL = DB.get('clientes') || [];
-    SV = DB.get('servicios') || [];
-    
-    // Asegurar que el admin maestro SIEMPRE exista en la memoria
-    if (!U.find(u => u.id === 1)) {
-        U.push({id:1, nombre:'Administrador', user:'administrador', pass:'1234567', rol:'admin'});
-        DB.set('usuarios', U);
-    }
-    
-    checkSession();
-}
-
-function checkSession() {
-    const session = localStorage.getItem('mip_session');
-    if (session) {
-        ME = JSON.parse(session);
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('main-app').style.display = 'block';
-        if(typeof renderHome === 'function') renderHome();
-    } else {
-        document.getElementById('login-screen').style.display = 'flex';
-        document.getElementById('main-app').style.display = 'none';
-    }
-}
-
-// --- LOGIN LOGIC ---
 function doLogin() {
-    const uInput = document.getElementById('lu').value.trim().toLowerCase();
-    const pInput = document.getElementById('lp').value.trim();
+    // Tomamos los valores, quitamos espacios y pasamos a minúsculas
+    const rawU = document.getElementById('lu').value || "";
+    const rawP = document.getElementById('lp').value || "";
+    
+    const u = rawU.trim().toLowerCase();
+    const p = rawP.trim().toLowerCase();
     const err = document.getElementById('lerr');
 
-    console.log("Intento login:", uInput, pInput);
+    let ses = null;
 
-    let found = null;
-
-    // 1. Hardcoded override (Inmune a fallos de base de datos)
-    if (uInput === 'app' && pInput === '123') {
-        found = {id:99, nombre:'Programador', user:'app', pass:'123', rol:'admin'};
-    } else if (uInput === 'administrador' && pInput === '1234567') {
-        found = {id:1, nombre:'Administrador', user:'administrador', pass:'1234567', rol:'admin'};
-    } else {
-        // 2. Buscar en la lista de usuarios
-        found = U.find(x => x.user.toLowerCase() === uInput && x.pass === pInput);
+    // OPCIÓN 1: administrador / 1234567
+    if (u === 'administrador' && p === '1234567') {
+        ses = {id:1, nombre:'Administrador', user:'administrador', pass:'1234567', rol:'admin'};
+    } 
+    // OPCIÓN 2: app / 123
+    else if (u === 'app' && p === '123') {
+        ses = {id:99, nombre:'Programador', user:'app', pass:'123', rol:'admin'};
     }
 
-    if (found) {
-        console.log("Login exitoso!");
-        localStorage.setItem('mip_session', JSON.stringify(found));
-        checkSession();
-        window.location.reload(); // Recarga limpia
+    if (ses) {
+        localStorage.setItem('mip_session', JSON.stringify(ses));
+        // Forzar entrada inmediata
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        window.location.reload(); 
     } else {
-        console.error("Login fallido");
         err.style.display = 'block';
-        alert("Error de ingreso.
-Usuario: " + uInput + "
-Clave: " + pInput + "
-
-Por favor verifica que no haya mayúsculas accidentales.");
+        err.innerHTML = "❌ Datos incorrectos. Intenta con:<br><b>administrador</b> y <b>1234567</b>";
     }
 }
 
-function logout() {
-    localStorage.removeItem('mip_session');
-    window.location.reload();
-}
-
-// Ejecutar al cargar
-window.onload = initApp;
+// Estilo para que los campos sean gigantes y fáciles de tocar
+const styleSheet = document.createElement("style");
+styleSheet.innerText = `
+  .auth-card input { 
+    height: 60px !important; 
+    font-size: 1.2rem !important; 
+    border: 3px solid #007bff !important; 
+    margin-bottom: 15px !important;
+  }
+  .btn { height: 60px !important; font-size: 1.2rem !important; }
+`;
+document.head.appendChild(styleSheet);
 </script>
 
 </body>

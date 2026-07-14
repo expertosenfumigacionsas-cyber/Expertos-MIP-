@@ -5,59 +5,50 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 <title>Expertos MIP</title>
 <style>
-:root { --g1:#0f4c25; --g2:#166534; --g4:#16a34a; --white:#ffffff; --slate8:#f1f5f9; }
-body { font-family: sans-serif; background: var(--slate8); margin: 0; padding: 0; }
-#login-screen {
-  display: flex; align-items: center; justify-content: center; min-height: 100vh;
-  background: linear-gradient(135deg, var(--g1), var(--g2)); padding: 20px;
-}
-.card {
-  background: white; padding: 40px 30px; border-radius: 30px; width: 100%; max-width: 360px;
-  text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-.btn {
-  width: 100%; height: 80px; border: none; border-radius: 20px; font-size: 1.4rem;
-  font-weight: bold; margin-bottom: 20px; cursor: pointer; color: white;
-}
-.owner { background: #27ae60; }
-.prog { background: #2980b9; }
-h2 { color: #333; margin-bottom: 30px; }
-#main-app { display: none; padding: 20px; text-align: center; }
+:root{--g1:#0f4c25;--g2:#166534;--slate8:#f1f5f9;}
+body{font-family:sans-serif;background:var(--slate8);margin:0;padding:0;}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--g1),var(--g2));padding:20px;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;}
+.card{background:white;padding:40px 30px;border-radius:30px;width:100%;max-width:360px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.3);}
+.btn{width:100%;height:80px;border:none;border-radius:20px;font-size:1.4rem;font-weight:bold;margin-bottom:20px;cursor:pointer;color:white;}
+.owner{background:#27ae60;}.prog{background:#2980b9;}
+#main-app{display:none;}
 </style>
 </head>
 <body>
 
 <div id="login-screen">
   <div class="card">
-    <h2>Expertos MIP</h2>
-    <button class="btn owner" onclick="acc('admin')">🟢 SOY EL DUEÑO</button>
-    <button class="btn prog" onclick="acc('prog')">🔵 PROGRAMADOR</button>
+    <h2 style="color:#333;margin-bottom:30px;">Expertos MIP</h2>
+    <button class="btn owner" onclick="forceAccess('admin')">🟢 SOY EL DUEÑO</button>
+    <button class="btn prog" onclick="forceAccess('prog')">🔵 PROGRAMADOR</button>
   </div>
 </div>
 
 <div id="main-app">
-  <h1>Bienvenido al Panel</h1>
-  <p>Cargando herramientas...</p>
-  <button onclick="localStorage.clear(); location.reload();">Cerrar Sesión</button>
+  <!-- Aquí el sistema cargará su contenido habitual -->
+  <div style="padding:20px;text-align:center;">
+    <p>Cargando herramientas de fumigación...</p>
+  </div>
 </div>
 
 <script>
-function acc(t) {
-    const user = (t === 'admin') 
-        ? {id: 1, nombre: 'Administrador', rol: 'admin'}
-        : {id: 99, nombre: 'Programador', rol: 'admin'};
+function forceAccess(type) {
+    const user = (type === 'admin') 
+        ? {id: 1, nombre: 'Administrador', user: 'administrador', rol: 'admin'}
+        : {id: 99, nombre: 'Programador', user: 'app', rol: 'admin'};
     localStorage.setItem('mip_session', JSON.stringify(user));
     location.reload();
 }
 
 window.onload = function() {
-    if (localStorage.getItem('mip_session')) {
+    const session = localStorage.getItem('mip_session');
+    if (session) {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
-        // Aquí es donde deberíamos inyectar el resto del código funcional en la siguiente vuelta
+        // Simular la carga del panel
+        alert('Bienvenido: ' + JSON.parse(session).nombre);
     }
 }
 </script>
-
 </body>
 </html>

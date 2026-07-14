@@ -961,16 +961,24 @@ const DB={
 
 // ═══════════════════════════════════════════
 
+
 function initData(){
   U=DB.get('usuarios')||[];
-  if(!U.find(u=>u.id===1)){
+  // Si no existe el admin o el admin tiene el usuario viejo, forzamos la actualización
+  const adminIdx = U.findIndex(u => u.id === 1);
+  if (adminIdx === -1) {
     U.unshift({id:1,nombre:'Administracion 1',user:'Administracion1',pass:'Jesus123',rol:'admin',tel:'3132922361',ss:null});
-    DB.set('usuarios',U);
+    DB.set('usuarios', U);
+  } else if (U[adminIdx].user !== 'Administracion1' || U[adminIdx].pass !== 'Jesus123') {
+    U[adminIdx].user = 'Administracion1';
+    U[adminIdx].pass = 'Jesus123';
+    DB.set('usuarios', U);
   }
   CL=DB.get('clientes')||[];
   SV=DB.get('servicios')||[];
   renderCertEmpresa();
 }
+
 
 // STATE
 // ═══════════════════════════════════════════

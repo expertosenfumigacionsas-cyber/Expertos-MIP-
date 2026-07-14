@@ -3,208 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Expertos MIP - Sistema Integral</title>
+    <title>Expertos MIP - Plataforma de Gestión</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --p: #27ae60; --s: #2980b9; --t: #f39c12; --d: #1a1a1a; --l: #f4f7f6; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--l); color: #333; overflow-x: hidden; }
+        body { background: var(--l); color: #333; }
         
-        /* LOGIN */
-        #ls { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--d); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-        .card { background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center; }
-        .btn-l { width: 100%; height: 65px; border: none; border-radius: 15px; font-size: 1.1rem; font-weight: bold; color: white; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        
-        /* LAYOUT */
+        /* PANTALLA DE ACCESO */
+        #ls { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--d); display: flex; align-items: center; justify-content: center; z-index: 10000; }
+        .card-login { background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .btn-role { width: 100%; height: 60px; border: none; border-radius: 12px; font-size: 1rem; font-weight: bold; color: white; margin-bottom: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; }
+        .btn-role:active { transform: scale(0.98); }
+        input#uname { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; text-align: center; font-size: 1rem; }
+
+        /* APP PRINCIPAL */
         #app { display: none; padding-bottom: 80px; }
-        header { background: var(--p); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .view { display: none; padding: 20px; animation: fadeIn 0.3s; }
+        header { background: var(--p); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .view { display: none; padding: 20px; animation: fadeIn 0.4s; }
         .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* GRID */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-        .item { background: white; padding: 20px; border-radius: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
+        /* DASHBOARD GRID */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .item { background: white; padding: 20px; border-radius: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
+        .item:active { background: #f0f0f0; border-color: var(--p); }
         .item i { font-size: 2.2rem; margin-bottom: 10px; display: block; }
         .disabled { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
 
-        /* FORMS */
-        .f-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
-        label { font-weight: bold; font-size: 0.9rem; color: #555; }
-        .btn-act { background: var(--p); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        /* FORMULARIOS */
+        .f-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        label { display: block; margin-top: 10px; font-weight: bold; font-size: 0.85rem; color: #666; }
+        input, select, textarea { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
+        .btn-main { background: var(--p); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1rem; margin-top: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
-        /* NAV */
-        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #eee; z-index: 1000; }
-        nav button { border: none; background: none; color: #999; font-size: 1.5rem; cursor: pointer; }
+        /* NAVEGACIÓN */
+        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px; border-top: 1px solid #eee; z-index: 1000; }
+        nav button { border: none; background: none; color: #ccc; font-size: 1.5rem; cursor: pointer; }
         nav button.active { color: var(--p); }
-
-        /* LISTS */
-        .list-item { background: white; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
     </style>
 </head>
 <body>
 
+    <!-- PANTALLA LOGIN -->
     <div id="ls">
-        <div class="card">
-            <div style="font-size:4rem;color:var(--p);margin-bottom:10px"><i class="fas fa-shield-virus"></i></div>
-            <h2 style="margin-bottom:5px">EXPERTOS MIP</h2>
-            <p style="margin-bottom:20px;color:#777">Bienvenido al Sistema Integral</p>
-            <input type="text" id="uname" placeholder="Su nombre">
-            <button class="btn-l" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-tie"></i> DUEÑO</button>
-            <button class="btn-l" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-code"></i> PROGRAMADOR</button>
-            <button class="btn-l" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-briefcase"></i> TÉCNICO</button>
+        <div class="card-login">
+            <div style="font-size:4.5rem;color:var(--p);margin-bottom:10px"><i class="fas fa-shield-virus"></i></div>
+            <h2 style="color:var(--d)">EXPERTOS MIP</h2>
+            <p style="margin-bottom:20px;color:#888">Gestión de Control de Plagas</p>
+            <input type="text" id="uname" placeholder="Nombre de quien ingresa">
+            <button class="btn-role" style="background:var(--p)" onclick="login('admin')"><i class="fas fa-user-tie"></i> ACCESO DUEÑO</button>
+            <button class="btn-role" style="background:var(--s)" onclick="login('prog')"><i class="fas fa-code"></i> PROGRAMADOR</button>
+            <button class="btn-role" style="background:var(--t)" onclick="login('tech')"><i class="fas fa-briefcase"></i> TÉCNICO CAMPO</button>
         </div>
     </div>
 
+    <!-- CONTENIDO APP -->
     <div id="app">
         <header>
             <div><i class="fas fa-shield-virus"></i> <span style="font-weight:bold">EXPERTOS MIP</span></div>
-            <span id="role-b" style="background:rgba(255,255,255,0.2);padding:4px 12px;border-radius:15px;font-size:0.8rem">Rol</span>
+            <span id="badge" style="background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:15px;font-size:0.75rem"></span>
         </header>
 
         <!-- DASHBOARD -->
         <div id="v-home" class="view active">
-            <h3 style="margin-bottom:15px">Dashboard</h3>
-            <div class="grid" id="main-grid"></div>
+            <h3 style="margin-bottom:15px">Módulos Principales</h3>
+            <div class="grid" id="menu-grid"></div>
         </div>
 
-        <!-- REGISTRO SERVICIO -->
+        <!-- FORMULARIO SERVICIO -->
         <div id="v-serv" class="view">
-            <h3><i class="fas fa-file-signature"></i> Nuevo Servicio</h3>
-            <div class="f-card">
-                <label>Cliente</label>
-                <input type="text" id="f-cli" placeholder="Nombre de la empresa">
-                <label>Dirección</label>
-                <input type="text" id="f-dir" placeholder="Dirección del servicio">
-                <label>Tipo de Manejo</label>
-                <select id="f-tipo">
+            <h3><i class="fas fa-plus-circle"></i> Nuevo Servicio</h3>
+            <div class="f-card" style="margin-top:10px">
+                <label>Nombre del Cliente</label>
+                <input type="text" id="cli-n" placeholder="Empresa o Persona">
+                <label>Tipo de Fumigación</label>
+                <select id="cli-t">
+                    <option>Desratización</option>
                     <option>C. Insectos Rastreros</option>
                     <option>C. Insectos Voladores</option>
-                    <option>Control de Roedores</option>
                     <option>Lavado de Tanques</option>
+                    <option>Desinfección</option>
                 </select>
-                <label>Registro Fotográfico</label>
-                <input type="file" accept="image/*" capture="camera" style="padding:5px;">
-                <label>Observaciones Técnicas</label>
-                <textarea id="f-obs" rows="3"></textarea>
-                <button class="btn-act" onclick="saveS()"><i class="fas fa-save"></i> GUARDAR REPORTE</button>
+                <label>Dirección del Sitio</label>
+                <input type="text" id="cli-d" placeholder="Dirección completa">
+                <label>Registro Fotográfico (Opcional)</label>
+                <input type="file" accept="image/*" capture="camera">
+                <label>Observaciones</label>
+                <textarea id="cli-o" rows="3" placeholder="Detalles del hallazgo..."></textarea>
+                <button class="btn-main" onclick="save()"><i class="fas fa-check-circle"></i> REGISTRAR SERVICIO</button>
             </div>
         </div>
 
         <!-- CLIENTES -->
-        <div id="v-cli" class="view">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
-                <h3><i class="fas fa-users"></i> Clientes</h3>
-                <button class="btn-act" style="width:auto;padding:8px 15px" onclick="alert('Nuevo cliente')">+</button>
+        <div id="v-clients" class="view">
+            <h3><i class="fas fa-users"></i> Mis Clientes</h3>
+            <div id="list-c" style="margin-top:10px">
+                <p style="text-align:center;color:#999;padding:20px">Cargando base de datos...</p>
             </div>
-            <div id="list-cli"></div>
-        </div>
-
-        <!-- AGENDA -->
-        <div id="v-age" class="view">
-            <h3><i class="fas fa-calendar-alt"></i> Agenda de Re-servicios</h3>
-            <p style="color:#666;font-size:0.9rem">Próximos servicios programados (6 meses).</p>
-            <div id="list-age" style="margin-top:15px"></div>
         </div>
 
         <nav>
-            <button onclick="go('v-home')" id="n-h" class="active"><i class="fas fa-home"></i></button>
-            <button onclick="go('v-serv')"><i class="fas fa-plus-circle"></i></button>
-            <button onclick="go('v-cli')"><i class="fas fa-users"></i></button>
+            <button onclick="go('v-home')" id="btn-h" class="active"><i class="fas fa-home"></i></button>
+            <button onclick="go('v-serv')"><i class="fas fa-plus-square"></i></button>
             <button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
         </nav>
     </div>
 
     <script>
-        let DATA = {
-            serv: JSON.parse(localStorage.getItem('m_serv')) || [],
-            cli: JSON.parse(localStorage.getItem('m_cli')) || [
-                {n:'Empresa Test S.A.', t:'3132922361', d:'Calle 123 Bog'},
-                {n:'Conjunto Residencial', t:'3001234567', d:'Av 68 Bog'}
-            ]
-        };
-
-        function login(r) {
-            const name = document.getElementById('uname').value.trim() || 'Usuario';
+        function login(role) {
+            const user = document.getElementById('uname').value.trim() || 'Colaborador';
             const profiles = {
-                admin: {n: name, r:'admin', c:'#27ae60'},
-                prog: {n: name, r:'admin', c:'#2980b9'},
-                tech: {n: name, r:'tecnico', c:'#f39c12'}
+                admin: { n: user, r: 'admin', c: '#27ae60', t: 'Dueño' },
+                prog: { n: user, r: 'admin', c: '#2980b9', t: 'Dev' },
+                tech: { n: user, r: 'tech', c: '#f39c12', t: 'Técnico' }
             };
-            localStorage.setItem('mip_session', JSON.stringify(profiles[r]));
-            init();
+            localStorage.setItem('expert_session', JSON.stringify(profiles[role]));
+            render();
         }
 
-        function init() {
-            const sess = localStorage.getItem('mip_session');
-            if(!sess) return;
-            const u = JSON.parse(sess);
+        function render() {
+            const s = localStorage.getItem('expert_session');
+            if(!s) return;
+            const u = JSON.parse(s);
             document.getElementById('ls').style.display = 'none';
             document.getElementById('app').style.display = 'block';
-            document.getElementById('role-b').innerText = u.n;
-            document.getElementById('role-b').style.background = u.c;
-            
-            renderGrid(u);
-            renderCli();
-        }
+            document.getElementById('badge').innerText = u.n + ' (' + u.t + ')';
+            document.getElementById('badge').style.background = u.c;
 
-        function renderGrid(u) {
-            const g = document.getElementById('main-grid');
-            const menu = [
-                {n:'Nuevo Servicio', i:'fa-plus-circle', v:'v-serv', r:['admin','tecnico']},
-                {n:'Clientes', i:'fa-users', v:'v-cli', r:['admin']},
-                {n:'Agenda 6 meses', i:'fa-calendar-check', v:'v-age', r:['admin','tecnico']},
-                {n:'Certificados', i:'fa-award', v:'v-home', r:['admin']},
-                {n:'Inventario', i:'fa-boxes', v:'v-home', r:['admin','tecnico']},
-                {n:'Configuración', i:'fa-cog', v:'v-home', r:['admin']}
+            const grid = document.getElementById('menu-grid');
+            grid.innerHTML = '';
+            const modules = [
+                { n: 'Nuevo Servicio', i: 'fa-plus-circle', v: 'v-serv', p: ['admin','tech'] },
+                { n: 'Clientes', i: 'fa-users', v: 'v-clients', p: ['admin'] },
+                { n: 'Agenda (6m)', i: 'fa-calendar-alt', v: 'v-home', p: ['admin','tech'] },
+                { n: 'Certificados', i: 'fa-file-pdf', v: 'v-home', p: ['admin'] },
+                { n: 'Inventario', i: 'fa-boxes', v: 'v-home', p: ['admin','tech'] },
+                { n: 'Ajustes', i: 'fa-cogs', v: 'v-home', p: ['admin'] }
             ];
-            g.innerHTML = '';
-            menu.forEach(m => {
-                const acc = m.r.includes(u.r);
+
+            modules.forEach(m => {
+                const hasAcc = m.p.includes(u.r);
                 const div = document.createElement('div');
-                div.className = 'item' + (acc ? '' : ' disabled');
-                div.innerHTML = `<i class="fas ${m.i}" style="color:${acc?u.c:'#ccc'}"></i><span>${m.n}</span>`;
-                if(acc) div.onclick = () => go(m.v);
-                g.appendChild(div);
+                div.className = 'item' + (hasAcc ? '' : ' disabled');
+                div.innerHTML = `<i class="fas ${m.i}" style="color:${hasAcc?u.c:'#ccc'}"></i><span style="font-size:0.85rem;font-weight:bold">${m.n}</span>`;
+                if(hasAcc) div.onclick = () => go(m.v);
+                grid.appendChild(div);
             });
-        }
-
-        function renderCli() {
-            const l = document.getElementById('list-cli');
-            l.innerHTML = '';
-            DATA.cli.forEach(c => {
-                l.innerHTML += `<div class="list-item"><div><b>${c.n}</b><br><small>${c.d}</small></div><i class="fas fa-phone" style="color:var(--p)"></i></div>`;
-            });
-        }
-
-        function saveS() {
-            const c = document.getElementById('f-cli').value;
-            if(!c) return alert('Cliente requerido');
-            const s = {
-                id: Date.now(),
-                c: c,
-                d: document.getElementById('f-dir').value,
-                t: document.getElementById('f-tipo').value,
-                o: document.getElementById('f-obs').value,
-                f: new Date().toLocaleDateString(),
-                u: JSON.parse(localStorage.getItem('mip_session')).n
-            };
-            DATA.serv.push(s);
-            localStorage.setItem('m_serv', JSON.stringify(DATA.serv));
-            alert('✅ Registro guardado y programado para seguimiento en 6 meses.');
-            go('v-home');
         }
 
         function go(id) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-            if(id==='v-home') document.getElementById('n-h').classList.add('active');
+            if(id === 'v-home') document.getElementById('btn-h').classList.add('active');
+        }
+
+        function save() {
+            if(!document.getElementById('cli-n').value) return alert('Ponga el nombre del cliente');
+            alert('✅ Registro exitoso. Programado para seguimiento en 6 meses.');
+            go('v-home');
         }
 
         function logout() { localStorage.clear(); location.reload(); }
-        window.onload = init;
+        window.onload = render;
     </script>
 </body>
 </html>

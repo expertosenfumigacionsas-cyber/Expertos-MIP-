@@ -1,56 +1,51 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Expertos MIP Pro</title><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><style>
-:root{--p:#2ecc71;--d:#141e30;--s:#243b55;--c:#1abc9c;--bg:#f8f9fa;--txt:#2c3e50}
+:root{--p:#2ecc71;--d:#0d1124;--s:#1a237e;--c:#1abc9c;--bg:#0d1124;--txt:#ffffff;--card:#161b33}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter','Segoe UI',sans-serif}
-body{background:var(--bg);color:var(--txt)}
+body{background:var(--bg);color:var(--txt);min-height:100vh}
 #ls{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg, #1b5e20 0%, #0d1124 100%);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px}
-.card-login{background:rgba(255,255,255,0.98);padding:40px 30px;border-radius:32px;width:100%;max-width:400px;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,0.3)}
+.card-login{background:rgba(255,255,255,0.98);padding:40px 30px;border-radius:32px;width:100%;max-width:400px;text-align:center;color:#333}
 .logo-main{width:140px;height:140px;margin:0 auto 25px;background:white;border-radius:24px;padding:10px;box-shadow:0 10px 20px rgba(0,0,0,0.1)}
-.logo-circle{width:80px;height:80px;border:4px solid var(--c);border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--d);margin:0 auto;position:relative}
+.logo-circle{width:80px;height:80px;border:4px solid var(--c);border-radius:50%;display:flex;align-items:center;justify-content:center;background:#0d1124;margin:0 auto;position:relative}
 .logo-circle i{color:white;font-size:2.5rem}
-.logo-text{background:var(--d);color:var(--c);width:100%;padding:8px 0;font-weight:900;font-size:1.1rem;margin-top:10px;border-radius:8px}
+.logo-text{background:#0d1124;color:var(--c);width:100%;padding:8px 0;font-weight:900;font-size:1.1rem;margin-top:10px;border-radius:8px}
 #app{display:none;padding-bottom:120px}
-header{background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);padding:20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.03)}
+header{background:rgba(13,17,36,0.8);backdrop-filter:blur(10px);padding:20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;border-bottom:1px solid rgba(255,255,255,0.1)}
 .view{display:none;padding:20px;max-width:600px;margin:0 auto}
 .active{display:block}
-.section-title{font-size:0.8rem;font-weight:800;color:#999;text-transform:uppercase;letter-spacing:1px;margin:20px 0 10px}
+.section-title{font-size:0.8rem;font-weight:800;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin:20px 0 10px}
 .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.menu-item{background:white;padding:20px;border-radius:24px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,0.03);border:1px solid #f0f0f0}
-.menu-item i{font-size:2rem;margin-bottom:10px;display:block;color:var(--d)}
-.form-sector{background:white;padding:20px;border-radius:24px;margin-bottom:15px;border-left:5px solid var(--c);box-shadow:0 2px 10px rgba(0,0,0,0.02)}
-.form-sector-title{font-size:0.9rem;font-weight:700;color:var(--d);margin-bottom:15px;display:flex;align-items:center;gap:10px}
-input,select,textarea{width:100%;padding:14px;margin:10px 0;border:1.5px solid #eee;border-radius:12px;font-size:0.95rem}
-.btn-primary{width:100%;padding:18px;background:var(--d);color:white;border:none;border-radius:18px;font-weight:700;margin-top:20px;cursor:pointer}
-nav{position:fixed;bottom:20px;left:20px;right:20px;background:var(--d);display:flex;justify-content:space-around;padding:15px;border-radius:24px;z-index:1000}
-nav button{background:none;border:none;color:white;font-size:1.4rem;opacity:0.5}
+.menu-item{background:var(--card);padding:20px;border-radius:24px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05)}
+.menu-item i{font-size:2.2rem;margin-bottom:10px;display:block;color:var(--c)}
+.menu-item b{color:white;font-size:0.9rem}
+.form-sector{background:var(--card);padding:20px;border-radius:24px;margin-bottom:15px;border-left:5px solid var(--c);box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+.form-sector-title{font-size:0.95rem;font-weight:700;color:var(--c);margin-bottom:15px;display:flex;align-items:center;gap:10px}
+input,select,textarea{width:100%;padding:14px;margin:10px 0;border:1px solid rgba(255,255,255,0.1);border-radius:12px;font-size:0.95rem;background:#1e2548;color:white}
+input::placeholder{color:rgba(255,255,255,0.4)}
+.btn-primary{width:100%;padding:18px;background:var(--p);color:white;border:none;border-radius:18px;font-weight:700;margin-top:20px;cursor:pointer;box-shadow:0 10px 20px rgba(46,204,113,0.3)}
+nav{position:fixed;bottom:20px;left:20px;right:20px;background:rgba(22,27,51,0.95);backdrop-filter:blur(10px);display:flex;justify-content:space-around;padding:15px;border-radius:24px;z-index:1000;border:1px solid rgba(255,255,255,0.1)}
+nav button{background:none;border:none;color:white;font-size:1.4rem;opacity:0.4}
 nav button.active-nav{opacity:1;color:var(--c)}
-/* FIRMA PROFESIONAL */
-.signature-container{background:#fff;border:1px solid #ddd;border-radius:15px;padding:10px;position:relative}
-.signature-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:0 5px}
-.signature-header span{font-size:0.75rem;color:#777;font-weight:600}
-.signature-header button{background:#f0f0f0;border:none;color:#555;padding:5px 10px;border-radius:8px;font-size:0.7rem;font-weight:700;cursor:pointer}
+.signature-container{background:#fff;border-radius:15px;padding:10px;margin-top:10px}
 #canvas{background:#fdfdfd;border-radius:10px;width:100%;touch-action:none;cursor:crosshair}
-.signature-line{border-top:1px solid #ccc;margin-top:5px;width:100%}
+.signature-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:#333}
+.signature-header span{font-size:0.7rem;font-weight:700}
+.signature-header button{background:#eee;border:none;padding:5px 10px;border-radius:5px;font-size:0.6rem;font-weight:700;cursor:pointer}
 </style></head><body>
-<div id="ls"><div class="card-login"><div class="logo-main"><div class="logo-circle"><i class="fas fa-mouse"></i></div><div class="logo-text">EXPERTOS</div></div><h2>Ingreso MIP</h2><input type="text" id="un" placeholder="Usuario"><input type="password" placeholder="Contraseña"><button class="btn-primary" onclick="login()">Acceder</button></div></div>
-<div id="app"><header><div style="font-weight:900;color:var(--d)">EXPERTOS <span style="color:var(--c)">MIP</span></div><div id="rt" style="font-size:0.7rem;background:var(--d);color:white;padding:5px 12px;border-radius:10px"></div></header>
+<div id="ls"><div class="card-login"><div class="logo-main"><div class="logo-circle"><i class="fas fa-mouse"></i></div><div class="logo-text">EXPERTOS</div></div><h2>Ingreso MIP</h2><input type="text" id="un" placeholder="Usuario" style="background:#f9f9f9;color:#333"><input type="password" placeholder="Contraseña" style="background:#f9f9f9;color:#333"><button class="btn-primary" onclick="login()">Acceder al Sistema</button></div></div>
+<div id="app"><header><div style="font-weight:900;color:white;font-size:1.1rem">EXPERTOS <span style="color:var(--c)">MIP</span></div><div id="rt" style="font-size:0.7rem;background:var(--c);color:var(--d);padding:5px 12px;border-radius:10px;font-weight:bold"></div></header>
 <div id="v-home" class="view active">
-<div class="section-title">Operaciones de Campo</div>
+<div class="section-title">Operaciones</div>
 <div class="menu-grid"><div class="menu-item" onclick="go('v-serv')"><i class="fas fa-file-medical"></i><b>Nuevo Servicio</b></div><div class="menu-item" onclick="go('v-fichas')"><i class="fas fa-flask"></i><b>Fichas Técnicas</b></div></div>
 <div class="section-title">Administración</div>
 <div class="menu-grid"><div class="menu-item" onclick="go('v-reg')"><i class="fas fa-archive"></i><b>Historial</b></div><div class="menu-item" onclick="go('v-tech')"><i class="fas fa-users"></i><b>Técnicos</b></div></div></div>
-<div id="v-serv" class="view"><h3>Reporte de Servicio</h3>
-<div class="form-sector"><div class="form-sector-title"><i class="fas fa-user"></i> Datos del Cliente</div><input type="text" id="s-cli" placeholder="Razón Social"><select><option>Residencial</option><option>Comercial</option><option>Industrial</option></select></div>
-<div class="form-sector"><div class="form-sector-title"><i class="fas fa-bug"></i> Control Técnico</div><textarea placeholder="Productos / Dosificación"></textarea></div>
-<div class="form-sector"><div class="form-sector-title"><i class="fas fa-signature"></i> Firma de Aceptación</div>
-<div class="signature-container">
-<div class="signature-header"><span>Dibuje su firma aquí</span><button onclick="clearPad()">Limpiar</button></div>
-<canvas id="canvas" height="180"></canvas>
-<div class="signature-line"></div>
-<div style="text-align:center;font-size:0.65rem;color:#aaa;margin-top:5px">Certifico que el servicio fue realizado satisfactoriamente</div>
-</div>
+<div id="v-serv" class="view"><h3>Nuevo Reporte</h3>
+<div class="form-sector"><div class="form-sector-title"><i class="fas fa-user"></i> Datos del Cliente</div><input type="text" id="s-cli" placeholder="Nombre / Razón Social"><select><option>Residencial</option><option>Comercial</option><option>Industrial</option></select></div>
+<div class="form-sector"><div class="form-sector-title"><i class="fas fa-bug"></i> Registro Técnico</div><textarea placeholder="Productos utilizados y dosis..." rows="3"></textarea></div>
+<div class="form-sector"><div class="form-sector-title"><i class="fas fa-signature"></i> Firma del Cliente</div>
+<div class="signature-container"><div class="signature-header"><span>FIRME AQUÍ</span><button onclick="clearPad()">BORRAR</button></div><canvas id="canvas" height="160"></canvas></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px">
-<button style="background:#f39c12;color:white;border:none;padding:12px;border-radius:10px;font-weight:700" onclick="alert('Estado: En Proceso')">EN PROCESO</button>
-<button style="background:var(--p);color:white;border:none;padding:12px;border-radius:10px;font-weight:700" onclick="alert('Estado: Realizado')">REALIZADO</button>
+<button style="background:#f39c12;color:white;border:none;padding:12px;border-radius:12px;font-weight:700" onclick="alert('Estado: En Proceso')">EN PROCESO</button>
+<button style="background:var(--p);color:white;border:none;padding:12px;border-radius:12px;font-weight:700" onclick="alert('Estado: Realizado')">REALIZADO</button>
 </div></div>
 <button class="btn-primary" onclick="saveAll()">ENVIAR Y GUARDAR TODO</button></div>
 <div id="v-reg" class="view"><h3>Historial Maestro</h3><div id="rl"></div></div>
@@ -59,11 +54,11 @@ nav button.active-nav{opacity:1;color:var(--c)}
 let canvas, ctx, drawing = false;
 function login(){const u=document.getElementById('un').value||'Admin';document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';document.getElementById('rt').innerText=u.toUpperCase();}
 function go(id, btn){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(id).classList.add('active');if(btn){document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active-nav'));btn.classList.add('active-nav');}if(id==='v-serv')setTimeout(initPad,100);}
-function initPad(){canvas=document.getElementById('canvas');if(!canvas)return;ctx=canvas.getContext('2d');ctx.lineWidth=2.5;ctx.lineCap='round';ctx.strokeStyle='#141e30';canvas.addEventListener('mousedown',st);canvas.addEventListener('mousemove',dw);canvas.addEventListener('mouseup',sp);canvas.addEventListener('touchstart',st);canvas.addEventListener('touchmove',dw);canvas.addEventListener('touchend',sp);}
+function initPad(){canvas=document.getElementById('canvas');if(!canvas)return;ctx=canvas.getContext('2d');ctx.lineWidth=2.5;ctx.lineCap='round';ctx.strokeStyle='#0d1124';canvas.addEventListener('mousedown',st);canvas.addEventListener('mousemove',dw);canvas.addEventListener('mouseup',sp);canvas.addEventListener('touchstart',st);canvas.addEventListener('touchmove',dw);canvas.addEventListener('touchend',sp);}
 function st(e){drawing=true;ctx.beginPath();const r=canvas.getBoundingClientRect();const x=(e.clientX||e.touches[0].clientX)-r.left;const y=(e.clientY||e.touches[0].clientY)-r.top;ctx.moveTo(x,y);e.preventDefault();}
 function dw(e){if(!drawing)return;const r=canvas.getBoundingClientRect();const x=(e.clientX||e.touches[0].clientX)-r.left;const y=(e.clientY||e.touches[0].clientY)-r.top;ctx.lineTo(x,y);ctx.stroke();e.preventDefault();}
 function sp(){drawing=false;}
 function clearPad(){ctx.clearRect(0,0,canvas.width,canvas.height);}
-function saveAll(){alert('✅ REPORTE CON FIRMA GUARDADO EXITOSAMENTE');go('v-home');}
+function saveAll(){alert('✅ REPORTE GUARDADO EXITOSAMENTE');go('v-home');}
 function logout(){location.reload()}
 </script></body></html>

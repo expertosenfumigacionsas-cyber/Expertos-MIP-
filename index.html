@@ -272,25 +272,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <h2>Expertos en Fumigación</h2>
       <p>Sistema de Gestión MIP</p>
     </div>
-    <div class="auth-hint">
-      <p style="font-weight:700;margin-bottom:8px;">Acceso rápido:</p>
-      <div class="hint-row"><span style="font-size:0.72rem;color:#166534;">Usuario</span>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <span class="hint-val" id="hv-u">administracion1</span>
-          <button class="hint-copy" onclick="cpU()">Copiar</button>
-        </div>
-      </div>
-      <div class="hint-row" style="margin-top:6px;"><span style="font-size:0.72rem;color:#166534;">Contraseña</span>
-        <div style="display:flex;align-items:center;gap:6px;">
-          <span class="hint-val" id="hv-p">Jesús123</span>
-          <button class="hint-copy" onclick="cpP()">Copiar</button>
-        </div>
-      </div>
-    </div>
     <div class="field"><label>Usuario</label>
-      <input id="lu" type="text" value="administracion1" autocomplete="username" placeholder="Tu usuario"/></div>
+      <input id="lu" type="text" value="" autocomplete="username" placeholder="Tu usuario"/></div>
     <div class="field"><label>Contraseña</label>
-      <input id="lp" type="text" value="Jesús123" placeholder="Tu contraseña"/></div>
+      <input id="lp" type="password" value="" placeholder="Tu contraseña"/></div>
     <button class="btn-login" onclick="doLogin()">Ingresar →</button>
     <div class="auth-err" id="lerr"></div>
   </div>
@@ -607,8 +592,8 @@ function toast(msg,t=2500){
 }
 
 // ======= AUTH =======
-function cpU(){document.getElementById('lu').value='administracion1';toast('Usuario copiado ✓');}
-function cpP(){document.getElementById('lp').value='Jesús123';toast('Contraseña copiada ✓');}
+function cpU(){toast('Usuario copiado ✓');}
+function cpP(){toast('Contraseña copiada ✓');}
 
 function doLogin(){
   const u=document.getElementById('lu').value.trim();
@@ -630,8 +615,8 @@ function doLogout(){
   ME=null;
   document.getElementById('auth').style.display='flex';
   document.getElementById('app').style.display='none';
-  document.getElementById('lu').value='administracion1';
-  document.getElementById('lp').value='Jesús123';
+  
+  
   document.getElementById('lerr').textContent='';
   document.body.classList.remove('is-admin');
 }

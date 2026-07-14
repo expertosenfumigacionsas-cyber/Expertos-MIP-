@@ -962,14 +962,16 @@ const DB={
 // ═══════════════════════════════════════════
 
 
+
 function initData(){
   U=DB.get('usuarios')||[];
-  // Si no existe el admin o el admin tiene el usuario viejo, forzamos la actualización
   const adminIdx = U.findIndex(u => u.id === 1);
+  const correctAdmin = {id:1,nombre:'Administracion 1',user:'Administracion1',pass:'Jesus123',rol:'admin',tel:'3132922361',ss:null};
+  
   if (adminIdx === -1) {
-    U.unshift({id:1,nombre:'Administracion 1',user:'Administracion1',pass:'Jesus123',rol:'admin',tel:'3132922361',ss:null});
+    U.unshift(correctAdmin);
     DB.set('usuarios', U);
-  } else if (U[adminIdx].user !== 'Administracion1' || U[adminIdx].pass !== 'Jesus123') {
+  } else {
     U[adminIdx].user = 'Administracion1';
     U[adminIdx].pass = 'Jesus123';
     DB.set('usuarios', U);
@@ -978,6 +980,7 @@ function initData(){
   SV=DB.get('servicios')||[];
   renderCertEmpresa();
 }
+
 
 
 // STATE
@@ -1045,24 +1048,39 @@ function closeLB(){document.getElementById('lightbox').classList.remove('open');
 // ═══════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════
+
 function doLogin(){
   const u=document.getElementById('lu').value.trim();
   const p=document.getElementById('lp').value.trim();
+  
+  // LOGIN DE EMERGENCIA HARDCODED (Para asegurar acceso total hoy)
+  if((u==='Administracion1' || u==='administracion1') && p==='Jesus123'){
+     const admin = U.find(x=>x.id===1) || {id:1, nombre:'Administracion 1', rol:'admin'};
+     ME = admin;
+     finishLogin();
+     return;
+  }
+
   const found=U.find(x=>x.user===u&&x.pass===p);
   const err=document.getElementById('lerr');
   if(!found){err.classList.add('show');return;}
   err.classList.remove('show');
   ME=found;
+  finishLogin();
+}
+
+function finishLogin(){
   document.getElementById('auth').style.display='none';
   document.getElementById('app').style.display='block';
-  document.getElementById('topbar-name').textContent=found.nombre.split(' ')[0];
+  document.getElementById('topbar-name').textContent=ME.nombre.split(' ')[0];
   document.getElementById('topbar-rol').textContent=
-    found.rol==='admin'?'👑 Admin':found.rol==='programador'?'🗓 Programador':'👷 Técnico';
+    ME.rol==='admin'?'👑 Admin':ME.rol==='programador'?'🗓 Programador':'👷 Técnico';
   document.getElementById('welcome-msg').textContent=
-    '¡Hola, '+found.nombre.split(' ')[0]+'! '+
+    '¡Hola, '+ME.nombre.split(' ')[0]+'! '+
     (isAdmin()?'Todo listo para gestionar el día.':'Aquí están tus trabajos de hoy.');
   setupRol();renderAll();
 }
+
 
 function doLogout(){
   ME=null;

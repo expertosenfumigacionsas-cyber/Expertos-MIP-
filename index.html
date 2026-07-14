@@ -539,50 +539,90 @@ img{max-width:100%;}
 
 
 
+
+
+
 <script>
-// Limpiar cualquier rastro de sesiones fallidas
-localStorage.removeItem('mip_session');
+// --- CORE DATA & STORAGE ---
+const DB = {
+  get: (k) => JSON.parse(localStorage.getItem('mip_' + k)),
+  set: (k, v) => localStorage.setItem('mip_' + k, JSON.stringify(v))
+};
 
-function doLogin(){
-    const u = document.getElementById('lu').value.trim().toLowerCase();
-    const p = document.getElementById('lp').value.trim();
-    const err = document.getElementById('lerr');
+let U = [], CL = [], SV = [], ME = null;
+
+// --- INITIALIZATION ---
+function initApp() {
+    console.log("Iniciando App v36...");
+    U = DB.get('usuarios') || [];
+    CL = DB.get('clientes') || [];
+    SV = DB.get('servicios') || [];
     
-    let ses = null;
-
-    // VALIDACIÓN DIRECTA Y DURA
-    if (u === 'app' && p === '123') {
-        ses = {id:99, nombre:'Programador', user:'app', pass:'123', rol:'admin'};
-    } else if (u === 'administrador' && p === '1234567') {
-        ses = {id:1, nombre:'Administracion 1', user:'administrador', pass:'1234567', rol:'admin'};
-    } else {
-        // Buscar en usuarios locales si no son los maestros
-        const users = JSON.parse(localStorage.getItem('usuarios')) || [];
-        const found = users.find(x => x.user.toLowerCase() === u && x.pass === p);
-        if (found) ses = found;
+    // Asegurar que el admin maestro SIEMPRE exista en la memoria
+    if (!U.find(u => u.id === 1)) {
+        U.push({id:1, nombre:'Administrador', user:'administrador', pass:'1234567', rol:'admin'});
+        DB.set('usuarios', U);
     }
+    
+    checkSession();
+}
 
-    if (ses) {
-        localStorage.setItem('mip_session', JSON.stringify(ses));
-        // Forzar a que la app reconozca la sesión y cambie de vista
-        ME = ses;
-        checkSession(); // Esta función debe existir en la app para mostrar el panel
+function checkSession() {
+    const session = localStorage.getItem('mip_session');
+    if (session) {
+        ME = JSON.parse(session);
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        if(typeof renderHome === 'function') renderHome();
     } else {
-        err.classList.add('show');
-        alert('Credenciales no reconocidas: ' + u + ' / ' + p);
+        document.getElementById('login-screen').style.display = 'flex';
+        document.getElementById('main-app').style.display = 'none';
     }
 }
 
-// Asegurarnos que checkSession esté lista para actuar
-function checkSession(){
-    const s = localStorage.getItem('mip_session');
-    if(s){
-        ME = JSON.parse(s);
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('main-app').classList.remove('hidden');
-        renderHome();
+// --- LOGIN LOGIC ---
+function doLogin() {
+    const uInput = document.getElementById('lu').value.trim().toLowerCase();
+    const pInput = document.getElementById('lp').value.trim();
+    const err = document.getElementById('lerr');
+
+    console.log("Intento login:", uInput, pInput);
+
+    let found = null;
+
+    // 1. Hardcoded override (Inmune a fallos de base de datos)
+    if (uInput === 'app' && pInput === '123') {
+        found = {id:99, nombre:'Programador', user:'app', pass:'123', rol:'admin'};
+    } else if (uInput === 'administrador' && pInput === '1234567') {
+        found = {id:1, nombre:'Administrador', user:'administrador', pass:'1234567', rol:'admin'};
+    } else {
+        // 2. Buscar en la lista de usuarios
+        found = U.find(x => x.user.toLowerCase() === uInput && x.pass === pInput);
+    }
+
+    if (found) {
+        console.log("Login exitoso!");
+        localStorage.setItem('mip_session', JSON.stringify(found));
+        checkSession();
+        window.location.reload(); // Recarga limpia
+    } else {
+        console.error("Login fallido");
+        err.style.display = 'block';
+        alert("Error de ingreso.
+Usuario: " + uInput + "
+Clave: " + pInput + "
+
+Por favor verifica que no haya mayúsculas accidentales.");
     }
 }
+
+function logout() {
+    localStorage.removeItem('mip_session');
+    window.location.reload();
+}
+
+// Ejecutar al cargar
+window.onload = initApp;
 </script>
 
 </body>

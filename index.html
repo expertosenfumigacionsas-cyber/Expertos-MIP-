@@ -1095,6 +1095,7 @@ function forceAdminLogin(){
 
 
 
+
 function doLogin(){
   const lu = document.getElementById('lu');
   const lp = document.getElementById('lp');
@@ -1102,13 +1103,33 @@ function doLogin(){
   const p = lp.value.trim();
   const err = document.getElementById('lerr');
 
-  // EL LOGIN MÁS BÁSICO: app / 123
+  // LOGIN PARA PROGRAMADOR (ADMIN TOTAL)
   if(u === 'app' && p === '123'){
-     ME = {id:1, nombre:'Administracion 1', user:'app', pass:'123', rol:'admin'};
+     // Le asignamos rol 'admin' para que vea TODO
+     ME = {id:99, nombre:'Programador', user:'app', pass:'123', rol:'admin'};
      localStorage.setItem('mip_session', JSON.stringify(ME));
      finishLogin();
      return;
   }
+
+  if(u === 'administrador' && p === '1234567'){
+     ME = {id:1, nombre:'Administracion 1', user:'administrador', pass:'1234567', rol:'admin'};
+     localStorage.setItem('mip_session', JSON.stringify(ME));
+     finishLogin();
+     return;
+  }
+
+  if(!U || U.length === 0) U = DB.get('usuarios') || [];
+  const found = U.find(x => x.user.toLowerCase() === u && x.pass === p);
+  if(found){
+    ME = found;
+    localStorage.setItem('mip_session', JSON.stringify(ME));
+    finishLogin();
+  } else {
+    err.classList.add('show');
+  }
+}
+
 
   // RESPALDO: administrador / 1234567
   if(u === 'administrador' && p === '1234567'){

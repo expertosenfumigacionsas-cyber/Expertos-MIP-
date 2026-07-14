@@ -586,6 +586,13 @@ if(!localStorage.getItem('mip_v18_reset')){
     </div>
     <button class="btn-login" onclick="doLogin()">Ingresar al sistema →</button>
     <div class="auth-err" id="lerr">⚠️ Usuario o contraseña incorrectos</div>
+    <div style="margin-top:20px; text-align:center;">
+      <button onclick="alert('Usuarios en memoria: ' + JSON.stringify(U.map(x=>x.user + ':' + x.pass)))" 
+              style="background:none; border:none; color:var(--slate5); font-size:0.6rem; text-decoration:underline; cursor:pointer;">
+        Verificar usuarios registrados
+      </button>
+    </div>
+
 
 
   </div>
@@ -993,23 +1000,21 @@ const DB={
 
 
 
+
 function initData(){
-  U=DB.get('usuarios')||[];
-  const adminIdx = U.findIndex(u => u.id === 1);
-  const easyAdmin = {id:1,nombre:'Administracion 1',user:'administrador',pass:'1234567',rol:'admin',tel:'3132922361',ss:null};
+  U = DB.get('usuarios') || [];
   
-  if (adminIdx === -1) {
-    U.unshift(easyAdmin);
-    DB.set('usuarios', U);
-  } else {
-    U[adminIdx].user = 'administrador';
-    U[adminIdx].pass = '1234567';
+  // ASEGURAR QUE EL ADMIN MAESTRO ESTÉ EN LA LISTA
+  if(!U.find(u => u.id === 1)){
+    U.unshift({id:1,nombre:'Administracion 1',user:'administrador',pass:'1234567',rol:'admin',tel:'3132922361',ss:null});
     DB.set('usuarios', U);
   }
-  CL=DB.get('clientes')||[];
-  SV=DB.get('servicios')||[];
+  
+  CL = DB.get('clientes') || [];
+  SV = DB.get('servicios') || [];
   renderCertEmpresa();
 }
+
 
 
 
